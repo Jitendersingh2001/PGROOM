@@ -9,13 +9,43 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  name      String
+  firstName String
+  lastName  String
+  mobileNo  String 
+  state     String
+  city      String
+  address   String
   email     String   @unique
   status    Status   @default(Active)
   password  String
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
+
+model UserRole {
+  id            Int      @id @default(autoincrement())
+  userRoleName  String   @unique
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+model State {
+  id        Int      @id @default(autoincrement())
+  stateName String
+  cities    City[]   // This defines the opposite side of the relation
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model City {
+  id        Int      @id @default(autoincrement())
+  stateId   Int
+  state     State    @relation(fields: [stateId], references: [id])
+  cityName  String 
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
 
 enum Status {
   Active
