@@ -17,5 +17,6 @@ const config = {
   db_password: process.env.DB_PASSWORD,
   db_name: process.env.DB_NAME,
   db_port: process.env.DB_PORT,
+  jwt_secret_key : process.env.JWT_SECRET_KEY,
 }
 module.exports = config;
