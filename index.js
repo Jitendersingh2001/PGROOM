@@ -1,3 +1,3 @@
-require('./config/initEnv');
-const PORT = process.env.PORT || 3000;
-console.log(PORT);
+let config = require('./config/initEnv');
+const PORT = config.port || 3000;
+console.log(`The port is: ${PORT}`);
