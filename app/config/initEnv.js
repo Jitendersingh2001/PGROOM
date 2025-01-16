@@ -1,5 +1,5 @@
 // initEnv.js
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
 // Load the environment variables from the .env file
 const result = dotenv.config();
@@ -10,13 +10,19 @@ if (result.error) {
 }
 
 const config = {
-  databaseURL: process.env.DATABASE_URL,
-  port: process.env.PORT,
-  db_host: process.env.DB_HOST,
-  db_user: process.env.DB_USER,
-  db_password: process.env.DB_PASSWORD,
-  db_name: process.env.DB_NAME,
-  db_port: process.env.DB_PORT,
-  jwt_secret_key : process.env.JWT_SECRET_KEY,
-}
+  server: {
+    port: process.env.PORT,
+  },
+  db: {
+    databaseURL: process.env.DATABASE_URL,
+    db_host: process.env.DB_HOST,
+    db_user: process.env.DB_USER,
+    db_password: process.env.DB_PASSWORD,
+    db_name: process.env.DB_NAME,
+    db_port: process.env.DB_PORT,
+  },
+  jwt: {
+    jwt_secret_key: process.env.JWT_SECRET_KEY,
+  },
+};
 module.exports = config;
