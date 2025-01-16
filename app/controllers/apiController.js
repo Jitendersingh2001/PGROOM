@@ -1,28 +1,42 @@
-const apiService = require('../services/apiService');
+const apiService = require("../services/apiService");
+const controller = require("./controller");
+const constMessage = require("../constant/message");
+const http = require("../constant/statusCodes");
 
 const apiController = {
-
-/**
- * function to get all states
- */
+  /**
+   * Function to get all states
+   */
   getStates: async (req, res) => {
     try {
-        return await apiService.getAllStates(req, res);
+      const result = await apiService.getAllStates(req);
+      controller.sendResponse(
+        res,
+        result,
+        constMessage.FETCH_SUCCESSFUL.replace(":name", "States"),
+        http.OK
+      );
     } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch state' });
+      controller.sendErrorResponse(res, error);
     }
-    },
-    
-    /**
-     * function to get all cities acc to state id
-     */
-    getCities: async (req, res) => {
-        try {
-            return await apiService.getCities(req, res);
-        } catch (error) {
-            res.status(500).json({ error: 'Failed to fetch cities' });
-        }
+  },
+
+  /**
+   * Function to get all cities according to state id
+   */
+  getCities: async (req, res) => {
+    try {
+      const result = await apiService.getCities(req, res);
+      controller.sendResponse(
+        res,
+        result,
+        constMessage.FETCH_SUCCESSFUL.replace(":name", "Cities"),
+        http.OK
+      );
+    } catch (error) {
+      controller.sendErrorResponse(res, error);
     }
+  },
 };
 
 module.exports = apiController;

@@ -5,7 +5,7 @@ const apiService = {
   /**
    * function to get all states
    */
-  getAllStates: async (req, res) => {
+  getAllStates: async (req) => {
     try {
       const states = await prisma.state.findMany({
         select: {
@@ -13,7 +13,7 @@ const apiService = {
           stateName: true,
         },
       });
-      res.json(states);
+    return states;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Failed to fetch states" });
