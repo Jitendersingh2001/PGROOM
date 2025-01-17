@@ -1,13 +1,16 @@
 const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 
-const apiService = {
+class ApiService {
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
+
   /**
-   * function to get all states
+   * Function to get all states
    */
-  getAllStates: async (req) => {
+  async getAllStates(req) {
     try {
-      const states = await prisma.state.findMany({
+      const states = await this.prisma.state.findMany({
         select: {
           id: true,
           stateName: true,
@@ -17,14 +20,14 @@ const apiService = {
     } catch (error) {
       throw new Error(error);
     }
-  },
+  }
 
   /**
-   * function to get all cities acc to state id
+   * Function to get all cities according to state ID
    */
-  getCities: async (req, res) => {
+  async getCities(req, res) {
     try {
-      const cities = await prisma.city.findMany({
+      const cities = await this.prisma.city.findMany({
         where: {
           stateId: parseInt(req.params.id),
         },
@@ -33,11 +36,11 @@ const apiService = {
           cityName: true,
         },
       });
-      res.json(cities);
+      return cities;
     } catch (error) {
       throw new Error(error);
     }
-  },
-};
+  }
+}
 
-module.exports = apiService;
+module.exports = ApiService;

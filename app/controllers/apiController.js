@@ -1,42 +1,47 @@
-const apiService = require("../services/apiService");
-const controller = require("./controller");
-const constMessage = require("../constant/message");
-const http = require("../constant/statusCodes");
+const ApiService = require("../services/apiService");
+const Controller = require("./controller");
+const http = require('../constant/statusCodes');
+const constMessage = require('../constant/message');
 
-const apiController = {
+class ApiController extends Controller {
+  constructor() {
+    super();
+    this.apiService = new ApiService();
+  }
+
   /**
    * Function to get all states
    */
-  getStates: async (req, res) => {
+  getStates = async (req, res) => {
     try {
-      const result = await apiService.getAllStates(req);
-      controller.sendResponse(
+      const result = await this.apiService.getAllStates(req);
+      this.sendResponse(
         res,
         result,
         constMessage.FETCH_SUCCESSFUL.replace(":name", "States"),
         http.OK
       );
     } catch (error) {
-      controller.sendErrorResponse(res, error);
+      this.sendErrorResponse(res, error);
     }
-  },
+  };
 
   /**
-   * Function to get all cities according to state id
+   * Function to get all cities according to state ID
    */
-  getCities: async (req, res) => {
+  getCities = async (req, res) => {
     try {
-      const result = await apiService.getCities(req, res);
-      controller.sendResponse(
+      const result = await this.apiService.getCities(req, res);
+      this.sendResponse(
         res,
         result,
         constMessage.FETCH_SUCCESSFUL.replace(":name", "Cities"),
         http.OK
       );
     } catch (error) {
-      controller.sendErrorResponse(res, error);
+      this.sendErrorResponse(res, error);
     }
-  },
-};
+  };
+}
 
-module.exports = apiController;
+module.exports = new ApiController();

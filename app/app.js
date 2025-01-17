@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // file for open api's mean don't need any authentication
-app.use('/pgroomns', apiRoutes);
+app.use('/pgrooms', apiRoutes);
 
 
 module.exports = app;

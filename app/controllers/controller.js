@@ -1,27 +1,25 @@
 const http = require('../constant/statusCodes');
 const constMessage = require('../constant/message');
-const message = require('../constant/message');
 const logger = require('../utils/logger');
 
-const controller = {
-
-    sendResponse: (res, data, message, statusCode) => {
+class Controller {
+    sendResponse = (res, data, message, statusCode) => {
         const response = {
             message: message || constMessage.REQUEST_SUCCESSFUL,
-            statusCode : statusCode ?? http.OK,
-            data: data || null
+            statusCode: statusCode ?? http.OK,
+            data: data || null,
         };
         return res.json(response);
-    },
+    }
 
-    sendErrorResponse: (res, error) => {
+    sendErrorResponse = (res, error) => {
         logger.error(error);
         const response = {
             message: constMessage.SOMETHING_WENT_WRONG,
             statusCode: error.statusCode ?? http.INTERNAL_SERVER_ERROR,
-        }
+        };
         return res.json(response);
     }
-};
+}
 
-module.exports = controller;
+module.exports = Controller;
