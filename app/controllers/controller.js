@@ -1,6 +1,7 @@
 const http = require('../constant/statusCodes');
 const constMessage = require('../constant/message');
 const message = require('../constant/message');
+const logger = require('../utils/logger');
 
 const controller = {
 
@@ -14,6 +15,7 @@ const controller = {
     },
 
     sendErrorResponse: (res, error) => {
+        logger.error(error);
         const response = {
             message: constMessage.SOMETHING_WENT_WRONG,
             statusCode: error.statusCode ?? http.INTERNAL_SERVER_ERROR,
