@@ -1,4 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
+const helper = require("../utils/helper");
+const http = require('../constant/statusCodes')
+const constMessage = require("../constant/message")
 
 class profileService {
   constructor() {
@@ -8,15 +11,22 @@ class profileService {
   /**
    * Function to get all states
    */
-  async login(req) {
-    try {
-      const states = await this.prisma.state.findMany({
-        select: {
-          id: true,
-          stateName: true,
-        },
-      });
-      return states;
+  async login(req, res) {
+      try {
+        const { email } = req.body;
+        const user = await this.prisma.user.findUnique({
+            where: {
+              email,
+            },
+        });
+        if (!user) {
+            helper.sendError(
+                res,
+                constMessage.NOT_FOUND.replace(":name", "User"),
+                http.NOT_FOUND
+            )
+          }
+      return user;
     } catch (error) {
       throw new Error(error);
     }

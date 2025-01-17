@@ -18,11 +18,11 @@ class profileController extends Controller {
     validateRequest(loginValidator),
     async (req, res) => {
       try {
-        const result = await this.profileService.login(req);
+        const result = await this.profileService.login(req, res);
         this.sendResponse(
           res,
           result,
-          constMessage.FETCH_SUCCESSFUL.replace(":name", "States"),
+          constMessage.FETCH_SUCCESSFUL.replace(":name", "User"),
           http.OK
         );
       } catch (error) {
