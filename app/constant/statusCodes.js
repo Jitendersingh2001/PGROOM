@@ -18,6 +18,7 @@ const http = {
     BAD_GATEWAY: 502,
     SERVICE_UNAVAILABLE: 503,
     GATEWAY_TIMEOUT: 504,
+    UNPROCESSABLE_ENTITY: 422,
 };
 
 module.exports = http;
