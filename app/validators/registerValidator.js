@@ -86,6 +86,14 @@ const registerValidator = Joi.object({
       'any.required': 'isAdmin is required',
       'boolean.empty': 'isAdmin is required',
     }),
+  address: Joi.string()
+    .required()
+    .not().empty()
+    .messages({
+      'string.base': 'Address must be a string',
+      'any.required': 'Address is required',
+      'string.empty': 'Address is required',
+    }),
 });
 
 module.exports = registerValidator;

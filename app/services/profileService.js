@@ -4,6 +4,7 @@ const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const bcrypt = require("bcrypt");
 const constant = require("../constant/constant");
+const { add } = require("winston");
 
 class profileService {
   constructor() {
@@ -38,35 +39,41 @@ class profileService {
    */
   async createAccount(req, res) {
     try {
-      const transaction = await this.prisma.$transaction([
-        this.prisma.user.create({
-          data: {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            mobileNo: req.body.mobileNo,
-            state: req.body.state,
-            city: req.body.city,
-            password: await bcrypt.hash(req.body.password, 10),
-            status: constant.ACTIVE,
+      // Create the user
+      const user = await this.prisma.user.create({
+        data: {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          mobileNo: req.body.mobileNo,
+          state: {
+            connect: { id: req.body.state },
           },
-        }),
-        this.prisma.userRoleLink.create({
-          data: {
-            userId: user.id,
-            roleId: req.body.isAdmin ? constant.ADMIN_ROLE_ID : constant.USER_ROLE_ID,
+          city: {
+            connect: { id: req.body.city },
           },
-        }),
-      ]);
-      if(transaction){
-        return true;
-      }
-      return false;
+          password: await bcrypt.hash(req.body.password, 10),
+          status: constant.ACTIVE,
+          address: req.body.address,
+        },
+      });
+
+      // Create the user role link
+      await this.prisma.userRoleLink.create({
+        data: {
+          userId: user.id,
+          roleId: req.body.isAdmin
+            ? constant.ADMIN_ROLE_ID
+            : constant.USER_ROLE_ID,
+        },
+      });
+
+      return true;
     } catch (error) {
       console.error("Error creating account:", error);
-      throw new Error(error);
+      throw new Error(error.message); // Ensure only the error message is passed
     }
-  }  
+  }
 }
 
 module.exports = profileService;
