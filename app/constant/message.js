@@ -2,7 +2,8 @@ const message = {
     SOMETHING_WENT_WRONG: 'Something went wrong',
     REQUEST_SUCCESSFUL: 'Request was successful',
     FETCH_SUCCESSFUL: ':name fetched successfully',
-    NOT_FOUND : ':name not found'
+    NOT_FOUND: ':name not found',
+    ALREADY_EXIST : ":name already exist",
 };
 
 module.exports = message;

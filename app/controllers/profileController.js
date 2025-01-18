@@ -3,6 +3,7 @@ const Controller = require("./controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const loginValidator = require('../validators/loginValidator');
+const registerValidator = require('../validators/registerValidator');
 const validateRequest = require('../middleware/validationMiddleware');
 
 class profileController extends Controller {
@@ -30,6 +31,26 @@ class profileController extends Controller {
       }
     },
   ];
+  
+    /**
+   * Function to register
+   */
+    createAccount = [
+      validateRequest(registerValidator),
+      async (req, res) => {
+        try {
+          const result = await this.profileService.createAccount(req, res);
+          this.sendResponse(
+            res,
+            result,
+            constMessage.FETCH_SUCCESSFUL.replace(":name", "User"),
+            http.OK
+          );
+        } catch (error) {
+          this.sendErrorResponse(res, error);
+        }
+      },
+    ];
 }
 
 module.exports = new profileController();

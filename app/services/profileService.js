@@ -31,6 +31,17 @@ class profileService {
       throw new Error(error);
     }
   }
+  /**
+   * function to create account
+   */
+  async createAccount(req, res) {
+    try {
+      
+    return true;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 }
 
 module.exports = profileService;
