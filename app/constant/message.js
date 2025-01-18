@@ -5,6 +5,7 @@ const message = {
     NOT_FOUND: ':name not found',
     ALREADY_EXIST: ":name already exist",
     CREATED_SUCCESSFULLY: ":name created successfully",
+    WRONG_PASSWORD : "Wrong password",
 };
 
 module.exports = message;

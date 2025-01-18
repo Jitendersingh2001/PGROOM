@@ -15,25 +15,47 @@ class profileService {
    * Function to get all states
    */
   async login(req, res) {
+    const { email, password } = req.body;
     try {
-      const { email } = req.body;
-      const user = await this.prisma.user.findUnique({
-        where: {
-          email,
-        },
-      });
+      const user = await this.prisma.user.findUnique({ where: { email } });
+
       if (!user) {
-        helper.sendError(
+        return helper.sendError(
           res,
           constMessage.NOT_FOUND.replace(":name", "User"),
           http.NOT_FOUND
         );
       }
-      return user;
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        return helper.sendError(
+          res,
+          constMessage.WRONG_PASSWORD,
+          http.UNAUTHORIZED
+        );
+      }
+
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        mobileNo: user.mobileNo,
+        state: user.stateId,
+        city: user.cityId,
+        address: user.address,
+      };
     } catch (error) {
-      throw new Error(error);
+      helper.sendError(
+        res,
+        error.message || "Internal Server Error",
+        http.INTERNAL_SERVER_ERROR
+      );
     }
   }
+
   /**
    * function to create account
    */
