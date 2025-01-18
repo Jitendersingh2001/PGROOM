@@ -1,5 +1,7 @@
+// validators/schemas/registerValidator.js
 const Joi = require('joi');
 const regex = require('../constant/Regex');
+const { EmailExists, MobileExists } = require('../rules');
 
 const registerValidator = Joi.object({
   firstName: Joi.string()
@@ -22,6 +24,7 @@ const registerValidator = Joi.object({
     .email()
     .required()
     .not().empty()
+    .external(EmailExists.validate)
     .messages({
       'string.base': 'Email must be a string',
       'string.email': 'Invalid email format',
@@ -32,6 +35,7 @@ const registerValidator = Joi.object({
     .length(10)
     .required()
     .not().empty()
+    .external(MobileExists.validate)
     .messages({
       'string.base': 'Mobile No must be a string',
       'string.length': 'Mobile Number must be exactly 10 digits',

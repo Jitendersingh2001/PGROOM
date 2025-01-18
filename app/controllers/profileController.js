@@ -2,8 +2,10 @@ const profileService = require("../services/profileService");
 const Controller = require("./controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
-const loginValidator = require('../validators/loginValidator');
-const registerValidator = require('../validators/registerValidator');
+const {
+  loginValidator,
+  registerValidator,
+} = require("../validators/index");
 const validateRequest = require('../middleware/validationMiddleware');
 
 class profileController extends Controller {
