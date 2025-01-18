@@ -8,6 +8,7 @@ const registerValidator = Joi.object({
     .messages({
       'string.base': 'First Name must be a string',
       'any.required': 'First Name is required',
+      'string.empty': 'First Name is required',
     }),
   lastName: Joi.string()
     .required()
@@ -15,6 +16,7 @@ const registerValidator = Joi.object({
     .messages({
       'string.base': 'Last Name must be a string',
       'any.required': 'Last Name is required',
+      'string.empty': 'Last Name is required',
     }),
   email: Joi.string()
     .email()
@@ -24,6 +26,7 @@ const registerValidator = Joi.object({
       'string.base': 'Email must be a string',
       'string.email': 'Invalid email format',
       'any.required': 'Email is required',
+      'string.empty': 'Email is required',
     }),
   mobileNo: Joi.string()
     .length(10)
@@ -33,6 +36,7 @@ const registerValidator = Joi.object({
       'string.base': 'Mobile No must be a string',
       'string.length': 'Mobile Number must be exactly 10 digits',
       'any.required': 'Mobile Number is required',
+      'string.empty': 'Mobile Number is required',
     }),
   state: Joi.number()
     .required()
@@ -40,6 +44,7 @@ const registerValidator = Joi.object({
     .messages({
       'number.base': 'State must be a Number',
       'any.required': 'State is required',
+      'number.empty': 'State is required',
     }),
   city: Joi.number()
     .required()
@@ -47,6 +52,7 @@ const registerValidator = Joi.object({
     .messages({
       'number.base': 'City must be a Number',
       'any.required': 'City is required',
+      'number.empty': 'City is required',
     }),
   password: Joi.string()
     .required()
@@ -56,6 +62,7 @@ const registerValidator = Joi.object({
       'string.base': 'Password must be a string',
       'string.pattern.base': 'Password must be at least 8 characters long, include at least one letter, one number, and one special character.',
       'any.required': 'Password is required',
+      'string.empty': 'Password is required',
     }),
   confirmPassword: Joi.string()
     .required()
@@ -65,6 +72,7 @@ const registerValidator = Joi.object({
       'string.base': 'Confirm Password must be a string',
       'any.only': 'Confirm Password must match Password',
       'any.required': 'Confirm Password is required',
+      'string.empty': 'Confirm Password is required',
     }),
   isAdmin: Joi.boolean()
     .required()
@@ -72,6 +80,7 @@ const registerValidator = Joi.object({
     .messages({
       'boolean.base': 'isAdmin must be a boolean',
       'any.required': 'isAdmin is required',
+      'boolean.empty': 'isAdmin is required',
     }),
 });
 
