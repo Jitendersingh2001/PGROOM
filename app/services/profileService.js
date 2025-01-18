@@ -17,8 +17,14 @@ class profileService {
   async login(req, res) {
     const { email, password } = req.body;
     try {
-      const user = await this.prisma.user.findUnique({ where: { email } });
-
+      let token = null;
+      const user = await this.prisma.user.findUnique({
+        where: { email },
+        include: {
+          roles: true,
+        },
+      });
+  
       if (!user) {
         return helper.sendError(
           res,
@@ -26,9 +32,9 @@ class profileService {
           http.NOT_FOUND
         );
       }
-
+  
       const isPasswordValid = await bcrypt.compare(password, user.password);
-
+      const roleId = user.roles[0].roleId;
       if (!isPasswordValid) {
         return helper.sendError(
           res,
@@ -36,7 +42,10 @@ class profileService {
           http.UNAUTHORIZED
         );
       }
-
+      if (user && isPasswordValid) {
+        token = helper.generateToken(user.id, roleId);
+        req.session.token = token; 
+      }
       return {
         id: user.id,
         firstName: user.firstName,
@@ -46,11 +55,13 @@ class profileService {
         state: user.stateId,
         city: user.cityId,
         address: user.address,
+        token : token
       };
     } catch (error) {
       throw new Error(error);
     }
   }
+  
 
   /**
    * function to create account
