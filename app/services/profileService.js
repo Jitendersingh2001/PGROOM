@@ -48,11 +48,7 @@ class profileService {
         address: user.address,
       };
     } catch (error) {
-      helper.sendError(
-        res,
-        error.message || "Internal Server Error",
-        http.INTERNAL_SERVER_ERROR
-      );
+      throw new Error(error);
     }
   }
 
@@ -92,8 +88,7 @@ class profileService {
 
       return true;
     } catch (error) {
-      console.error("Error creating account:", error);
-      throw new Error(error.message); // Ensure only the error message is passed
+      throw new Error(error);
     }
   }
 }
