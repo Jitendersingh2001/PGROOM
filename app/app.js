@@ -28,4 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 // file for open APIs, no authentication required
 app.use('/pgrooms', apiRoutes);
 
+// API THAT REQUIRE AUTHORIZATION
+app.use("pgrooms/v1", apiRoutes);
+
 module.exports = app;

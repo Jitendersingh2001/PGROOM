@@ -21,7 +21,7 @@ class helper {
         const secretKey = config.jwt.jwt_secret_key;
       
         // Generate the JWT
-        const token = jwt.sign(payload, secretKey);
+        const token = jwt.sign(payload, secretKey, { expiresIn: '1d' });
         return token;
       }
 }
