@@ -24,5 +24,9 @@ const config = {
   jwt: {
     jwt_secret_key: process.env.JWT_SECRET_KEY,
   },
+  gmail: {
+    user : process.env.GMAIL_USER,
+    pass : process.env.GMAIL_APP_PASSWORD,
+  }
 };
 module.exports = config;
