@@ -7,6 +7,8 @@ const message = {
     CREATED_SUCCESSFULLY: ":name created successfully",
     WRONG_PASSWORD: "Wrong password",
     UNAUTHORIZED: "Unauthorized",
+    ERROR_SENDING_MAIL: "Error sending email",
+    ACCOUNT_CREATED : "Account created",
 };
 
 module.exports = message;

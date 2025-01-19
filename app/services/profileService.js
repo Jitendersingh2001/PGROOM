@@ -4,6 +4,8 @@ const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const bcrypt = require("bcrypt");
 const constant = require("../constant/constant");
+const sendEmail = require('../utils/mailer');
+const message = require("../constant/message");
 
 class profileService {
   constructor() {
@@ -66,6 +68,9 @@ class profileService {
    */
   async createAccount(req, res) {
     try {
+      const roleId = req.body.isAdmin
+      ? constant.ADMIN_ROLE_ID
+      : constant.USER_ROLE_ID
       // Create the user
       const user = await this.prisma.user.create({
         data: {
@@ -86,15 +91,20 @@ class profileService {
       });
 
       // Create the user role link
-      await this.prisma.userRoleLink.create({
+      const userRoleLink = await this.prisma.userRoleLink.create({
         data: {
           userId: user.id,
-          roleId: req.body.isAdmin
-            ? constant.ADMIN_ROLE_ID
-            : constant.USER_ROLE_ID,
+          roleId: roleId,
         },
       });
-
+      if (user && userRoleLink) {
+        sendEmail(
+          res,
+          user.email,
+          message.ACCOUNT_CREATED,
+          constMessage.CREATED_SUCCESSFULLY.replace(":name", "Account")
+        )
+      }
       return true;
     } catch (error) {
       throw new Error(error);
