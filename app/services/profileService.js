@@ -98,12 +98,18 @@ class profileService {
         },
       });
       if (user && userRoleLink) {
+        const templateData = {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+  
         sendEmail(
           res,
           user.email,
           message.ACCOUNT_CREATED,
-          constMessage.CREATED_SUCCESSFULLY.replace(":name", "Account")
-        )
+          'accountCreated',
+          templateData
+        );
       }
       return true;
     } catch (error) {
