@@ -4,7 +4,6 @@ const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const bcrypt = require("bcrypt");
 const constant = require("../constant/constant");
-const { add } = require("winston");
 
 class profileService {
   constructor() {
@@ -44,7 +43,6 @@ class profileService {
       }
       if (user && isPasswordValid) {
         token = helper.generateToken(user.id, roleId);
-        req.session.token = token; 
       }
       return {
         id: user.id,

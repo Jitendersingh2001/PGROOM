@@ -4,6 +4,8 @@ const session = require('express-session');
 const crypto = require('crypto');
 const app = express();
 const apiRoutes = require('./routes/api.js');
+const v1 = require('./routes/v1.js');
+const authMiddleware = require('../app/middleware/authMiddelware.js');
 
 // Generate a secure random session secret using crypto
 const secret = crypto.randomBytes(32).toString('base64');
@@ -29,6 +31,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/pgrooms', apiRoutes);
 
 // API THAT REQUIRE AUTHORIZATION
-app.use("pgrooms/v1", apiRoutes);
+app.use('/pgrooms/v1', authMiddleware, v1);
 
 module.exports = app;
