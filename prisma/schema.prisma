@@ -8,46 +8,115 @@ datasource db {
 }
 
 model User {
-  id        Int             @id @default(autoincrement())
-  firstName String
-  lastName  String
-  mobileNo  String
-  stateId   Int
-  cityId    Int
-  address   String
-  email     String          @unique
-  status    Status          @default(Active)
-  password  String
-  updatedAt DateTime        @updatedAt
-  createdAt DateTime        @default(now())
-  roles     UserRoleLink[]
+  id          Int       @id @default(autoincrement())
+  firstName   String    @db.VarChar
+  lastName    String    @db.VarChar
+  mobileNo    String    @unique @db.VarChar
+  address     String?   @db.VarChar
+  stateId     Int
+  cityId      Int
+  status      Status
+  email       String    @unique @db.VarChar
+  password    String    @db.VarChar
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  // Relations
+  userRoleLink UserRoleLink[]
+  userProperties UserProperties[]
+  tenant Tenant[]
   state     State           @relation(fields: [stateId], references: [id])
   city      City            @relation(fields: [cityId], references: [id])
 }
 
 model UserRole {
-  id           Int             @id @default(autoincrement())
-  userRoleName String          @unique
-  updatedAt    DateTime        @updatedAt
-  createdAt    DateTime        @default(now())
-  links        UserRoleLink[]
+  id        Int       @id @default(autoincrement())
+  roles     Roles
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  userRoleLink UserRoleLink[]
 }
 
 model UserRoleLink {
   id        Int       @id @default(autoincrement())
   userId    Int
   roleId    Int
-  updatedAt DateTime   @updatedAt
-  createdAt DateTime   @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  // Relations
-  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role UserRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+  userRole  UserRole  @relation(fields: [roleId], references: [id])
+}
 
-  // Ensure a user cannot have the same role multiple times
-  @@unique([userId, roleId])
+model UserProperties {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  state         Int
+  city          Int
+  propertyName  String    @db.VarChar
+  propertyImage String    @db.VarChar
+  status        PropertyStatus
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id])
+  rooms         Rooms[]
+  tenant        Tenant[]
+}
+
+model Rooms {
+  id            Int       @id @default(autoincrement())
+  propertyId    Int
+  roomNo        Int
+  roomImage     String    @db.VarChar // that will have the s3 bucket link
+  status        RoomStatus
+  description   String   @db.VarChar
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userProperties UserProperties @relation(fields: [propertyId], references: [id])
+  tenant         Tenant[]
+  rent           Rent[]
+  electricityBill ElectricityBill[]
+}
+
+model Tenant {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  propertyId  Int
+  roomId      Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user         User      @relation(fields: [userId], references: [id])
+  userProperties UserProperties @relation(fields: [propertyId], references: [id])
+  rooms         Rooms    @relation(fields: [roomId], references: [id])
+}
+
+model Rent {
+  id            Int       @id @default(autoincrement())
+  amount        Int
+  roomId        Int
+  paymentMethod PaymentMethod
+  upiId         String?   @db.VarChar //if rent is paid by upi
+  status        RentStatus
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  rooms         Rooms    @relation(fields: [roomId], references: [id])
+}
+
+model ElectricityBill {
+  id            Int       @id @default(autoincrement())
+  roomId        Int
+  amount        Int
+  paymentMethod PaymentMethod
+  upiId         String?   @db.VarChar //if E-Bill is paid by upi
+  status        BillStatus
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  rooms         Rooms    @relation(fields: [roomId], references: [id])
 }
 
 model State {
@@ -65,7 +134,7 @@ model City {
   id        Int      @id @default(autoincrement())
   stateId   Int
   state     State    @relation(fields: [stateId], references: [id])
-  cityName  String 
+  cityName  String
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
@@ -75,6 +144,37 @@ model City {
 
 enum Status {
   Active
-  Inactive
   Deleted
+  Invited
+}
+
+enum Roles {
+  SuperAdmin
+  Admin
+  Tenant
+}
+
+enum PropertyStatus {
+  Active
+  Inactive
+}
+
+enum RoomStatus {
+  Available
+  Occupied
+}
+
+enum PaymentMethod {
+  Cash
+  UPI
+}
+
+enum RentStatus {
+  Paid
+  Unpaid
+}
+
+enum BillStatus {
+  Paid
+  Unpaid
 }
