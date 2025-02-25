@@ -725,10 +725,9 @@ VALUES
     (DEFAULT, 28, 'Barasat', NOW(), NOW());
     
 INSERT INTO public."UserRole"(
-    id, "userRoleName", "updatedAt", "createdAt"
-)
+	id, roles, "createdAt", "updatedAt")
 VALUES
-    (1, 'superAdmin', NOW(), NOW()),
+    (1, 'SuperAdmin', NOW(), NOW()),
     (2, 'Admin', NOW(), NOW()),
     (3, 'Tenant', NOW(), NOW());
 
