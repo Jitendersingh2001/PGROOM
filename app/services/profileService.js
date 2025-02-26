@@ -22,10 +22,14 @@ class profileService {
       const user = await this.prisma.user.findUnique({
         where: { email },
         include: {
-          roles: true,
+          userRoleLink: {
+            include: {
+              userRole: true,
+            },
+          },
         },
       });
-  
+      
       if (!user) {
         return helper.sendError(
           res,
@@ -35,7 +39,7 @@ class profileService {
       }
   
       const isPasswordValid = await bcrypt.compare(password, user.password);
-      const roleId = user.roles[0].roleId;
+      const roleId = user.userRoleLink[0].roleId;
       if (!isPasswordValid) {
         return helper.sendError(
           res,
