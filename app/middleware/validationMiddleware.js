@@ -15,7 +15,6 @@ const validateRequest = (schema) => async (req, res, next) => {
     await schema.validateAsync(req.body, validationOptions);
     next();
   } catch (error) {
-    console.log(error);
     return helper.sendError(
       res,
       error.details[0].message,

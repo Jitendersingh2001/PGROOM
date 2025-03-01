@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const propertyController = require('../controllers/propertyController');
+const propertyController = require('../controllers/propertyController'); 
+const validators = require("../validators/index");
+const validateRequest = require("../middleware/validationMiddleware");
 
 /**
  * Property routes
  */
- router.post('/addproperty', propertyController.addProperty);
+ router.post('/addproperty', validateRequest(validators.propertyValidator), propertyController.addProperty);
   
   router.get('/getproperty', (req, res) => {
     res.send('Get property');
