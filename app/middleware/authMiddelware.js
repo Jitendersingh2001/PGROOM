@@ -5,26 +5,29 @@ const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 
 const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization').replace('Bearer ', '');
+    // Extract the token from the 'Authorization' header
+    const authHeader = req.header('Authorization');
 
-    if (!token) {
-        return helper.sendError(
-            res,
-            constMessage.UNAUTHORIZED,
-            http.UNAUTHORIZED
-        );
+    // Validate the presence and format of the Authorization header
+    if (!authHeader?.startsWith('Bearer ')) {
+        return helper.sendError(res, constMessage.UNAUTHORIZED, http.UNAUTHORIZED);
     }
 
+    // Extract the token by removing the 'Bearer ' prefix
+    const token = authHeader.split(' ')[1];
+
     try {
+        // Verify the token using the secret key
         const decoded = jwt.verify(token, config.jwt.jwt_secret_key);
+
+        // Attach the decoded user information to the request object
         req.user = decoded;
+
+        // Proceed to the next middleware or route handler
         next();
     } catch (err) {
-        return helper.sendError(
-            res,
-            constMessage.UNAUTHORIZED,
-            http.UNAUTHORIZED
-        );
+        // Handle invalid or expired tokens
+        return helper.sendError(res, constMessage.UNAUTHORIZED, http.UNAUTHORIZED);
     }
 };
 
