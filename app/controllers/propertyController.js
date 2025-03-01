@@ -17,7 +17,7 @@ class propertyController extends Controller {
    */
   addProperty = async (req, res) => {
     try {
-        const result = "ehjl";
+    const result = await this.propertyService.addProperty(req);
       this.sendResponse(
         res,
         result,
