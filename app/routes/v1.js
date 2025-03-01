@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const propertyController = require('../controllers/propertyController'); 
+const imageController = require('../controllers/imageController');
 const validators = require("../validators/index");
 const validateRequest = require("../middleware/validationMiddleware");
+const upload = require("../middleware/multerMiddleware");
 
 /**
  * Property routes
@@ -21,4 +23,5 @@ const validateRequest = require("../middleware/validationMiddleware");
     res.send('Delete property');
   });
 
+  router.post('/uploadImage', upload.array("images", 10), imageController.uploadImage);
 module.exports = router;
