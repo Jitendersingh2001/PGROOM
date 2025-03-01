@@ -1,13 +1,13 @@
-const ApiService = require("../services/apiService");
+const propertyService = require("../services/propertyService");
 const Controller = require("./controller");
 const http = require('../constant/statusCodes');
 const constMessage = require('../constant/message');
 
 class propertyController extends Controller {
-  constructor() {
+    constructor(propertyService) {
     super();
-    this.apiService = new ApiService();
+    this.propertyService = propertyService;
   }
 }
 
-module.exports = new propertyController();
+module.exports = new propertyController(propertyService);
