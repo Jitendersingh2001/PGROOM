@@ -18,8 +18,7 @@ class imageController extends Controller {
       const type = req.body.type;
       const files = req.files;
       const imageService = ImageFactory.create(type);
-      result = imageService.uploadImage(req.body);
-      const result = "done";
+      const result = await imageService.uploadImage(req, res);
       this.sendResponse(
         res,
         result,

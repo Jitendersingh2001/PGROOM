@@ -15,6 +15,14 @@ class propertyService {
       throw new Error(error);
     }
   }
+
+  async uploadImage(req,res) { 
+    try {
+      return "property";
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 module.exports = propertyService;
