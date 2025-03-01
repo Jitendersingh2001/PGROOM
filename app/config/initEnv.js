@@ -32,5 +32,11 @@ const config = {
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT
   },
+  aws: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    bucketRegion: process.env.AWS_REGION,
+    bucketName: process.env.AWS_BUCKET_NAME,
+  }
 };
 module.exports = config;

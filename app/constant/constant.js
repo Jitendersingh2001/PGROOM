@@ -1,3 +1,4 @@
+const config = require('../config/initEnv');
 const constant = {
     ACTIVE: "Active",
     INACTIVE: "Inactive",
@@ -6,6 +7,7 @@ const constant = {
     USER_ROLE_ID: 3,
     TRUE: "true",
     FALSE: "false",
+    S3_BUCKET_NAME: config.aws.bucketName,
 };
 
 module.exports = constant;

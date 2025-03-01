@@ -10,7 +10,7 @@ class ImageFactory {
     static create(type) {
         switch (type) {
             case 'property':
-                return propertyService;
+                return new propertyService();
             // Add more cases for other types if needed
             default:
                 throw new Error(`Unknown service type: ${type}`);
