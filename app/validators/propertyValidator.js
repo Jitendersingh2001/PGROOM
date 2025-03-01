@@ -26,11 +26,9 @@ const propertyValidator = Joi.object({
   propertyImage: Joi.string()
     .required()
     .empty(["", null])
-    .pattern(new RegExp(regex.base64))
     .messages({
       "any.required": "Image is required",
-      "string.base": "Image must be a string",
-      "string.pattern.base": "Image must be a valid Base64 string",
+      "string.base": "Image must be a string"
     }),
 });
 
