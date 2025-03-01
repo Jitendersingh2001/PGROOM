@@ -1,19 +1,33 @@
 const Joi = require('joi');
 
 const propertyValidator = Joi.object({
-  email: Joi.string()
-    .email()
+  state: Joi.string()
     .required()
     .empty(['', null])
     .messages({
-      'string.email': 'Invalid email format',
-      'any.required': 'Email is required',
+      'any.required': 'State is required',
+      'string.base': 'State must be a string',
     }),
-  password: Joi.string()
+  city: Joi.string()
     .required()
     .empty(['', null])
     .messages({
-      'any.required': 'Password is required',
+      'any.required': 'City is required',
+      'string.base': 'City must be a string',
+    }),
+  propertyName: Joi.string()
+    .required()
+    .empty(['', null])
+    .messages({
+      'any.required': 'Property Name is required',
+      'string.base': 'Property Name must be a string',
+    }),
+  propertyImage: Joi.string()
+    .required()
+    .empty(['', null])
+    .messages({
+      'any.required': 'Image is required',
+      'string.base': 'Image must be a string',
     }),
 });
 
