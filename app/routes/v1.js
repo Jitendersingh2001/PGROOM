@@ -24,9 +24,9 @@ router.put('/property', (req, res) => {
   res.send('Update property');
 });
 
-router.delete('/property', (req, res) => {
-  res.send('Delete property');
-});
+router.delete('/property/:id',
+  propertyController.deleteProperty
+);
 
 router.post(
   '/uploadImage',

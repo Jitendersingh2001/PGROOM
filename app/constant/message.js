@@ -1,3 +1,5 @@
+const { DELETED } = require("./constant");
+
 const message = {
     SOMETHING_WENT_WRONG: 'Something went wrong',
     REQUEST_SUCCESSFUL: 'Request was successful',
@@ -9,6 +11,7 @@ const message = {
     UNAUTHORIZED: "Unauthorized",
     ERROR_SENDING_MAIL: "Error sending email",
     ACCOUNT_CREATED: "Account created",
+    DELETED_SUCCESSFULLY: ":name deleted successfully",
 };
 
 module.exports = message;

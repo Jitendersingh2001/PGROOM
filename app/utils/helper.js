@@ -66,5 +66,21 @@ class helper {
       throw error;
     }
   };
+
+  deleteFileFromS3 = async (fileName) => {
+    try {
+      // Define S3 delete parameters
+      const params = {
+        Bucket: constant.S3_BUCKET_NAME,
+        Key: fileName,
+      };
+
+      // Delete the file from S3
+      return await s3.deleteObject(params).promise();
+    } catch (error) {
+      console.error("Error deleting file from S3:", error);
+      throw error;
+    }
+  }
 }
 module.exports = new helper();

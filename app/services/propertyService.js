@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
-const { uploadFileToS3, getFileFromS3 } = require("../utils/helper");
+const { uploadFileToS3, getFileFromS3 , deleteFileFromS3} = require("../utils/helper");
 const { v4: uuidv4 } = require("uuid");
 
 class PropertyService {
@@ -77,7 +77,7 @@ class PropertyService {
 
       // If no property is found, return a consistent response
       if (!property) {
-        return { error: "Property not found" };
+        return constant.NOT_FOUND;
       }
 
       // Generate the signed URL for the property image
@@ -96,6 +96,46 @@ class PropertyService {
       };
 
       return responseData;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * Function to delete a property
+   */
+  async deleteProperty(req) {
+    try {
+      // Parse the property ID from the request parameters
+      const id = parseInt(req.params.id, 10);
+      // Fetch the property record from the database
+      const property = await this.prisma.UserProperties.findUnique({
+        where: {
+          id: id,
+          status: constant.ACTIVE,
+        },
+      });
+
+      // If no property is found, return a consistent response
+      if (!property) {
+        return constant.NOT_FOUND;
+      }
+
+      // Update the property status to 'DELETED'
+      const updatedProperty = await this.prisma.UserProperties.update({
+        where: {
+          id: id,
+        },
+        data: {
+          status: constant.DELETED,
+        },
+      });
+      if (updatedProperty) {
+        await deleteFileFromS3(
+          property.propertyImage
+        );
+      }
+        return updatedProperty;
     } catch (error) {
       throw new Error(error);
     }

@@ -157,6 +157,7 @@ enum Roles {
 enum PropertyStatus {
   Active
   Inactive
+  Deleted
 }
 
 enum RoomStatus {

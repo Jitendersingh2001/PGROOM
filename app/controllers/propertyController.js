@@ -2,6 +2,7 @@ const propertyService = require("../services/propertyService");
 const Controller = require("./controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
+const constant = require("../constant/constant");
 
 class propertyController extends Controller {
   constructor(propertyService) {
@@ -10,11 +11,11 @@ class propertyController extends Controller {
   }
 
   /**
-   * function to add property
+   * Function to add property
    */
   addProperty = async (req, res) => {
     try {
-    const result = await this.propertyService.addProperty(req);
+      const result = await this.propertyService.addProperty(req);
       this.sendResponse(
         res,
         result,
@@ -27,21 +28,40 @@ class propertyController extends Controller {
   };
 
   /**
-   * function to add property
+   * Function to get property
    */
-    getProperty = async (req, res) => {
-      try {
+  getProperty = async (req, res) => {
+    try {
       const result = await this.propertyService.getProperty(req);
-        this.sendResponse(
-          res,
-          result,
-          constMessage.FETCH_SUCCESSFUL.replace(":name", "Property"),
-          http.OK
-        );
-      } catch (error) {
-        this.sendErrorResponse(res, error);
-      }
-    };
+      const statusCode =
+        result === constant.NOT_FOUND ? http.NOT_FOUND : http.OK;
+      const message =
+        result === constant.NOT_FOUND
+          ? constMessage.NOT_FOUND.replace(":name", "Property")
+          : constMessage.DELETED_SUCCESSFULLY.replace(":name", "Property");
+      this.sendResponse(res, result, message, statusCode);
+    } catch (error) {
+      this.sendErrorResponse(res, error);
+    }
+  };
+
+  /**
+   * Function to delete property
+   */
+  deleteProperty = async (req, res) => {
+    try {
+      const result = await this.propertyService.deleteProperty(req);
+      const statusCode =
+        result === constant.NOT_FOUND ? http.NOT_FOUND : http.OK;
+      const message =
+        result === constant.NOT_FOUND
+          ? constMessage.NOT_FOUND.replace(":name", "Property")
+          : constMessage.DELETED_SUCCESSFULLY.replace(":name", "Property");
+      this.sendResponse(res, result, message, statusCode);
+    } catch (error) {
+      this.sendErrorResponse(res, error);
+    }
+  };
 }
 
 module.exports = new propertyController(new propertyService());
