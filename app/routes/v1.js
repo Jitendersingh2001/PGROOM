@@ -16,9 +16,9 @@ router.post(
   propertyController.addProperty
 );
 
-router.get('/getproperty', (req, res) => {
-  res.send('Get property');
-});
+router.get('/getproperty/:id',
+  propertyController.getProperty
+);
 
 router.put('/updateproperty', (req, res) => {
   res.send('Update property');

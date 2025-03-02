@@ -1,8 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
-const { uploadFileToS3 } = require("../utils/helper");
-const { v4: uuidv4 } = require('uuid');
+const { uploadFileToS3, getFileFromS3 } = require("../utils/helper");
+const { v4: uuidv4 } = require("uuid");
 
 class PropertyService {
   constructor() {
@@ -46,6 +46,56 @@ class PropertyService {
       });
 
       return property;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * Function to get a property
+   */
+  async getProperty(req) {
+    try {
+      // Parse the property ID from the request parameters
+      const id = parseInt(req.params.id, 10);
+
+      // Fetch the property along with state and city details
+      const property = await this.prisma.UserProperties.findUnique({
+        where: {
+          id: id,
+          status: constant.ACTIVE,
+        },
+        include: {
+          user: {
+            include: {
+              state: true,
+              city: true,
+            },
+          },
+        },
+      });
+
+      // If no property is found, return a consistent response
+      if (!property) {
+        return { error: "Property not found" };
+      }
+
+      // Generate the signed URL for the property image
+      const propertyImage = await getFileFromS3(
+        property.propertyImage,
+        constant.S3_EXPIRY
+      );
+
+      // Construct the final response object
+      const responseData = {
+        id: property.id,
+        state: property.user.state.stateName,
+        city: property.user.city.cityName,
+        propertyName: property.propertyName,
+        propertyImage: propertyImage,
+      };
+
+      return responseData;
     } catch (error) {
       throw new Error(error);
     }

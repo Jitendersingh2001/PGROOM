@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/initEnv");
 const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
+const http = require("../constant/statusCodes");
 
 class helper {
   sendError = (res, message, statusCode) => {
@@ -46,6 +47,23 @@ class helper {
     } catch (error) {
       console.error("Error uploading file to S3:", error);
       throw error; // Re-throw the error for further handling
+    }
+  };
+
+  getFileFromS3 = async (fileName, expiresIn) => {
+    try {
+      // Define S3 get parameters
+      const params = {
+        Bucket: constant.S3_BUCKET_NAME,
+        Key: fileName,
+        Expires: expiresIn,
+      };
+
+      // Get the file from S3
+      return await s3.getSignedUrlPromise('getObject', params);
+    } catch (error) {
+      console.error("Error getting file from S3:", error);
+      throw error;
     }
   };
 }

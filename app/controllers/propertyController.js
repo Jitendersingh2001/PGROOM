@@ -12,9 +12,6 @@ class propertyController extends Controller {
   /**
    * function to add property
    */
-  /**
-   * Function to get all states
-   */
   addProperty = async (req, res) => {
     try {
     const result = await this.propertyService.addProperty(req);
@@ -28,6 +25,23 @@ class propertyController extends Controller {
       this.sendErrorResponse(res, error);
     }
   };
+
+  /**
+   * function to add property
+   */
+    getProperty = async (req, res) => {
+      try {
+      const result = await this.propertyService.getProperty(req);
+        this.sendResponse(
+          res,
+          result,
+          constMessage.FETCH_SUCCESSFUL.replace(":name", "Property"),
+          http.OK
+        );
+      } catch (error) {
+        this.sendErrorResponse(res, error);
+      }
+    };
 }
 
 module.exports = new propertyController(new propertyService());
