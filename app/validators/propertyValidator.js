@@ -22,14 +22,7 @@ const propertyValidator = Joi.object({
     .messages({
       "any.required": "Property Name is required",
       "string.base": "Property Name must be a string",
-    }),
-  propertyImage: Joi.string()
-    .required()
-    .empty(["", null])
-    .messages({
-      "any.required": "Image is required",
-      "string.base": "Image must be a string"
-    }),
+    })
 });
 
 module.exports = propertyValidator;

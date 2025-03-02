@@ -21,7 +21,7 @@ class propertyController extends Controller {
       this.sendResponse(
         res,
         result,
-        constMessage.FETCH_SUCCESSFUL.replace(":name", "States"),
+        constMessage.CREATED_SUCCESSFULLY.replace(":name", "Property"),
         http.OK
       );
     } catch (error) {
@@ -30,4 +30,4 @@ class propertyController extends Controller {
   };
 }
 
-module.exports = new propertyController(propertyService);
+module.exports = new propertyController(new propertyService());

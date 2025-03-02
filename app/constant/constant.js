@@ -1,4 +1,3 @@
-const config = require('../config/initEnv');
 const constant = {
     ACTIVE: "Active",
     INACTIVE: "Inactive",
@@ -7,7 +6,8 @@ const constant = {
     USER_ROLE_ID: 3,
     TRUE: "true",
     FALSE: "false",
-    S3_BUCKET_NAME: config.aws.bucketName,
+    S3_BUCKET_NAME: "pgroom2.0",
+    PROPERTY_FOLDER : "PropertyImages",
 };
 
 module.exports = constant;

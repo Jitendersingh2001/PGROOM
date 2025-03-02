@@ -9,7 +9,7 @@ const upload = require("../middleware/multerMiddleware");
 /**
  * Property routes
  */
- router.post('/addproperty', validateRequest(validators.propertyValidator), propertyController.addProperty);
+ router.post('/addproperty', upload.array("images", 10) , validateRequest(validators.propertyValidator), propertyController.addProperty);
   
   router.get('/getproperty', (req, res) => {
     res.send('Get property');
