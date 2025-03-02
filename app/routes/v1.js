@@ -10,21 +10,21 @@ const upload = require("../middleware/multerMiddleware");
  * Property routes
  */
 router.post(
-  '/addproperty',
+  '/property',
   upload.array("images", 10),
   validateRequest(validators.propertyValidator),
   propertyController.addProperty
 );
 
-router.get('/getproperty/:id',
+router.get('/property/:id',
   propertyController.getProperty
 );
 
-router.put('/updateproperty', (req, res) => {
+router.put('/property', (req, res) => {
   res.send('Update property');
 });
 
-router.delete('/deleteproperty', (req, res) => {
+router.delete('/property', (req, res) => {
   res.send('Delete property');
 });
 
