@@ -20,13 +20,21 @@ class PropertyService {
    */
   async addProperty(req) {
     try {
+      // Extract request body and uploaded files
       const data = req.body;
       const image = req.files;
+  
+      // Get authenticated user ID
       const userId = req.authUser.userId;
+  
+      // Parse state and city values as integers
       const state = parseInt(data.state, 10);
       const city = parseInt(data.city, 10);
-
+  
+      // Process and store the uploaded image, retrieving its filename
       const imageName = await this.createOrUpdateImage(image[0]);
+  
+      // Add or update the property record in the repository
       return await this.propertyRepository.addOrUpdateProperty(
         userId,
         state,
@@ -158,28 +166,35 @@ class PropertyService {
    */
   async updateProperty(req) {
     try {
+      // Extract data from the request body
       const data = req.body;
       const image = req.files;
       const userId = req.authUser.userId;
+  
+      // Convert state, city, and id to integers for consistency
       const state = parseInt(data.state, 10);
       const city = parseInt(data.city, 10);
       const id = parseInt(data.id, 10);
-
+  
+      // Fetch the existing property details based on the provided ID and active status
       const propertyImage = await this.prisma.UserProperties.findUnique({
         where: {
           id: id,
           status: constant.ACTIVE,
         },
         select: {
-          propertyImage: true, // Only select the 'propertyImage' column
+          propertyImage: true,
         },
       });
-
+  
+      // Update or create a new property image
       const imageName = await this.createOrUpdateImage(
         image[0],
         id,
         propertyImage.propertyImage
       );
+  
+      // Add or update the property details in the repository
       return await this.propertyRepository.addOrUpdateProperty(
         userId,
         state,
@@ -193,6 +208,7 @@ class PropertyService {
       throw new Error(error);
     }
   }
+  
 }
 
 module.exports = PropertyService;

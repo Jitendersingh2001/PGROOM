@@ -38,7 +38,7 @@ class PropertyRepository {
       // If `id` is provided, update the existing property
       const updatedProperty = await this.prisma.UserProperties.upsert({
         where: {
-          id: id, // Ensure `id` is a valid integer
+          id: id,
         },
         update: propertyData,
         create: propertyData,
