@@ -12,6 +12,7 @@ const message = {
     ERROR_SENDING_MAIL: "Error sending email",
     ACCOUNT_CREATED: "Account created",
     DELETED_SUCCESSFULLY: ":name deleted successfully",
+    UPDATED_SUCCESSFULLY : ":name updated successfully",
 };
 
 module.exports = message;

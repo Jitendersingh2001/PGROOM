@@ -20,9 +20,11 @@ router.get('/property/:id',
   propertyController.getProperty
 );
 
-router.put('/property', (req, res) => {
-  res.send('Update property');
-});
+router.put('/property',
+  upload.array("images", 10),
+  validateRequest(validators.propertyValidator),
+  propertyController.updateProperty
+);
 
 router.delete('/property/:id',
   propertyController.deleteProperty

@@ -3,10 +3,12 @@ const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
 const { uploadFileToS3, getFileFromS3 , deleteFileFromS3} = require("../utils/helper");
 const { v4: uuidv4 } = require("uuid");
+const propertyRepository = require("../repository/propertyRepository");
 
 class PropertyService {
   constructor() {
     this.prisma = new PrismaClient();
+    this.propertyRepository = new propertyRepository();
   }
 
   /**
@@ -15,37 +17,46 @@ class PropertyService {
   async addProperty(req) {
     try {
       const data = req.body;
-      const images = req.files;
+      const image = req.files;
       const userId = req.authUser.userId;
       const state = parseInt(data.state, 10);
       const city = parseInt(data.city, 10);
 
-      // Upload images to S3 and generate unique file names
-      const imageName = await Promise.all(
-        images.map(async (file) => {
-          const uniqueFileName = `${uuidv4()}-${file.originalname}`;
-          return uploadFileToS3(
-            file.buffer,
-            uniqueFileName,
-            file.mimetype,
-            constant.PROPERTY_FOLDER
-          );
-        })
+      const imageName = await this.createOrUpdateImage(image[0]);
+      return await this.propertyRepository.addOrUpdateProperty(
+        userId,
+        state,
+        city,
+        data.propertyName,
+        imageName,
+        constant.ACTIVE);
+      
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async createOrUpdateImage(image, id = null) 
+  {
+    try {
+      // If `id` is present, it means we are updating the image
+      if (id) {
+        // Delete the existing file from S3 if updating
+        await deleteFileFromS3(image);
+      }
+  
+      // Generate a unique file name for the new image
+      const uniqueFileName = `${uuidv4()}-${image.originalname}`;
+      // Upload the single image to S3
+      const uploadedImage = await uploadFileToS3(
+        image.buffer,
+        uniqueFileName,
+        image.mimetype,
+        constant.PROPERTY_FOLDER
       );
-
-      // Create a new property record in the database
-      const property = await this.prisma.UserProperties.create({
-        data: {
-          userId: userId,
-          state: state,
-          city: city,
-          propertyName: data.propertyName,
-          propertyImage: imageName[0],
-          status: constant.ACTIVE,
-        },
-      });
-
-      return property;
+  
+      // Return the uploaded image details (e.g., URL or metadata)
+      return uploadedImage;
     } catch (error) {
       throw new Error(error);
     }
