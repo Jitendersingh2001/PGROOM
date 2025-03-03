@@ -188,11 +188,13 @@ class PropertyService {
       });
   
       // Update or create a new property image
-      const imageName = await this.createOrUpdateImage(
-        image[0],
-        id,
-        propertyImage.propertyImage
-      );
+      if (image[0] !== propertyImage.propertyImage) {
+        const imageName = await this.createOrUpdateImage(
+          image[0],
+          id,
+          propertyImage.propertyImage
+        );
+      }
   
       // Add or update the property details in the repository
       return await this.propertyRepository.addOrUpdateProperty(
