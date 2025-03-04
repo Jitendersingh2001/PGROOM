@@ -55,6 +55,8 @@ model UserProperties {
   city          Int
   propertyName  String    @db.VarChar
   propertyImage String    @db.VarChar
+  propertyContact String  @db.VarChar
+  propertyAddress String @db.VarChar
   status        PropertyStatus
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
