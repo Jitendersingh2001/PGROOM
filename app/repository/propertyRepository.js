@@ -14,24 +14,28 @@ class PropertyRepository {
     city,
     propertyName,
     propertyImage,
+    propertyContact,
+    propertyAddress,
     status,
     id = null
   ) {
-      try {
+    try {
       const propertyData = {
         userId,
         state,
         city,
         propertyName,
         propertyImage,
+        propertyContact,
+        propertyAddress,
         status,
       };
 
       // If `id` is null, create a new property
       if (id === null) {
         const newProperty = await this.prisma.UserProperties.create({
-            data: propertyData,
-          });
+          data: propertyData,
+        });
         return newProperty;
       }
 

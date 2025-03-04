@@ -40,6 +40,8 @@ class PropertyService {
         state,
         city,
         data.propertyName,
+        data.propertyContact,
+        data.propertyAddress,
         imageName,
         constant.ACTIVE
       );
@@ -202,6 +204,8 @@ class PropertyService {
         state,
         city,
         data.propertyName,
+        data.propertyContact,
+        data.propertyAddress,
         imageName,
         constant.ACTIVE,
         id
