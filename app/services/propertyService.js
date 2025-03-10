@@ -217,7 +217,9 @@ class PropertyService {
       throw new Error(error);
     }
   }
-
+  /**
+   * Function to get all properties
+   */
   async getAllProperties(req) {
     try {
       // Get authenticated user ID

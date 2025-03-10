@@ -57,7 +57,6 @@ class PropertyRepository {
 
   async getAllProperties(userId) {
     try {
-      // Fetch all active properties along with state and city details
       const properties = await this.prisma.UserProperties.findMany({
         where: {
           userId: userId,
@@ -70,6 +69,9 @@ class PropertyRepository {
               city: true,
             },
           },
+        },
+        orderBy: {
+          id: 'asc',
         },
       });
       return properties;
