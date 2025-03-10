@@ -172,7 +172,8 @@ class PropertyService {
       const data = req.body;
       const image = req.files;
       const userId = req.authUser.userId;
-  
+      let imageName = null;
+      
       // Convert state, city, and id to integers for consistency
       const state = parseInt(data.state, 10);
       const city = parseInt(data.city, 10);
@@ -191,7 +192,7 @@ class PropertyService {
   
       // Update or create a new property image
       if (image[0] !== propertyImage.propertyImage) {
-        const imageName = await this.createOrUpdateImage(
+        imageName = await this.createOrUpdateImage(
           image[0],
           id,
           propertyImage.propertyImage
