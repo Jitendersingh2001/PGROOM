@@ -39,10 +39,10 @@ class PropertyService {
         userId,
         state,
         city,
+        imageName,
         data.propertyName,
         data.propertyContact,
         data.propertyAddress,
-        imageName,
         constant.ACTIVE
       );
     } catch (error) {
@@ -204,9 +204,9 @@ class PropertyService {
         state,
         city,
         data.propertyName,
+        imageName,
         data.propertyContact,
         data.propertyAddress,
-        imageName,
         constant.ACTIVE,
         id
       );
