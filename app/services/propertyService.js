@@ -267,7 +267,7 @@ class PropertyService {
       // Return the transformed data along with pagination metadata
       return {
         data: responseData,
-        meta: paginatedResult.meta, // Include pagination metadata
+        meta: paginatedResult.meta,
       };
     } catch (error) {
       throw error;
