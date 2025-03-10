@@ -225,24 +225,30 @@ class PropertyService {
       // Get authenticated user ID
       const userId = req.authUser.userId;
 
-      // Fetch all active properties from the repository
-      const properties = await this.propertyRepository.getAllProperties(userId);
-
+      const page = parseInt(req.body.page, 10) || 1;
+      const limit = parseInt(req.body.limit, 10) || 10;
+  
+      // Fetch all active properties from the repository with pagination
+      const paginatedResult = await this.propertyRepository.getAllProperties(userId, page, limit);
+  
+      // Extract the paginated properties data
+      const properties = paginatedResult.data;
+  
       // Extract all property images that need signed URLs
       const propertyImages = properties
         .filter((property) => property.propertyImage)
         .map((property) => property.propertyImage);
-
+  
       // Batch generate signed URLs for all property images
       const signedUrls = await Promise.all(
         propertyImages.map((image) => getFileFromS3(image, constant.S3_EXPIRY))
       );
-
+  
       // Create a map of propertyImage to signed URL for quick lookup
       const imageSignedUrlMap = new Map(
         propertyImages.map((image, index) => [image, signedUrls[index]])
       );
-
+  
       // Transform the properties array into the desired response format
       const responseData = properties.map((property) => {
         return {
@@ -257,8 +263,12 @@ class PropertyService {
           propertyContact: property.propertyContact,
         };
       });
-
-      return responseData;
+  
+      // Return the transformed data along with pagination metadata
+      return {
+        data: responseData,
+        meta: paginatedResult.meta, // Include pagination metadata
+      };
     } catch (error) {
       throw error;
     }

@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const constant = require("../constant/constant");
-
+const {paginate} = require("../utils/helper");
 class PropertyRepository {
   constructor() {
     this.prisma = new PrismaClient();
@@ -55,9 +55,9 @@ class PropertyRepository {
     }
   }
 
-  async getAllProperties(userId) {
+  async getAllProperties(userId, page = 1, limit = 10) {
     try {
-      const properties = await this.prisma.UserProperties.findMany({
+      const queryOptions = {
         where: {
           userId: userId,
           status: constant.ACTIVE,
@@ -73,8 +73,10 @@ class PropertyRepository {
         orderBy: {
           id: 'asc',
         },
-      });
-      return properties;
+      };
+  
+      const result = await paginate(this.prisma.UserProperties, queryOptions, page, limit);
+      return result;
     } catch (error) {
       throw new Error(error.message);
     }

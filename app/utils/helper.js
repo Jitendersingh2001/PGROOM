@@ -82,5 +82,25 @@ class helper {
       throw error;
     }
   }
+  paginate =  async (model, queryOptions, page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+  
+    return Promise.all([
+      model.findMany({
+        ...queryOptions,
+        skip,
+        take: limit,
+      }),
+      model.count({ where: queryOptions.where }),
+    ]).then(([data, total]) => ({
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    }));
+  }
 }
 module.exports = new helper();
