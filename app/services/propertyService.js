@@ -23,17 +23,17 @@ class PropertyService {
       // Extract request body and uploaded files
       const data = req.body;
       const image = req.files;
-  
+
       // Get authenticated user ID
       const userId = req.authUser.userId;
-  
+
       // Parse state and city values as integers
       const state = parseInt(data.state, 10);
       const city = parseInt(data.city, 10);
-  
+
       // Process and store the uploaded image, retrieving its filename
       const imageName = await this.createOrUpdateImage(image[0]);
-  
+
       // Add or update the property record in the repository
       return await this.propertyRepository.addOrUpdateProperty(
         userId,
@@ -117,6 +117,8 @@ class PropertyService {
         city: property.user.city.cityName,
         propertyName: property.propertyName,
         propertyImage: propertyImage,
+        propertyAddress: property.propertyAddress,
+        propertyContact: property.propertyContact,
       };
 
       return responseData;
@@ -173,12 +175,12 @@ class PropertyService {
       const image = req.files;
       const userId = req.authUser.userId;
       let imageName = null;
-      
+
       // Convert state, city, and id to integers for consistency
       const state = parseInt(data.state, 10);
       const city = parseInt(data.city, 10);
       const id = parseInt(data.id, 10);
-  
+
       // Fetch the existing property details based on the provided ID and active status
       const propertyImage = await this.prisma.UserProperties.findUnique({
         where: {
@@ -189,7 +191,7 @@ class PropertyService {
           propertyImage: true,
         },
       });
-  
+
       // Update or create a new property image
       if (image[0] !== propertyImage.propertyImage) {
         imageName = await this.createOrUpdateImage(
@@ -198,7 +200,7 @@ class PropertyService {
           propertyImage.propertyImage
         );
       }
-  
+
       // Add or update the property details in the repository
       return await this.propertyRepository.addOrUpdateProperty(
         userId,
@@ -215,7 +217,62 @@ class PropertyService {
       throw new Error(error);
     }
   }
-  
+  /**
+   * Function to get all properties for the authenticated user.
+   */
+  async getAllProperties(req) {
+    try {
+      // Get authenticated user ID
+      const userId = req.authUser.userId;
+
+      // Fetch all active properties along with state and city details
+      const properties = await this.prisma.UserProperties.findMany({
+        where: {
+          userId: userId,
+          status: constant.ACTIVE,
+        },
+        include: {
+          user: {
+            include: {
+              state: true,
+              city: true,
+            },
+          },
+        },
+      });
+
+      // Transform the properties array into the desired response format
+      const responseData = await Promise.all(
+        properties.map(async (property) => {
+          // Generate signed URL for the property image if it exists
+          let propertyImage = null;
+          if (property.propertyImage) {
+            propertyImage = await getFileFromS3(
+              property.propertyImage,
+              constant.S3_EXPIRY
+            );
+          }
+
+          // Construct the final response object for each property
+          return {
+            id: property.id,
+            state: property.user.state.stateName,
+            city: property.user.city.cityName,
+            propertyName: property.propertyName,
+            propertyImage: propertyImage,
+            propertyAddress: property.propertyAddress,
+            propertyContact: property.propertyContact,
+          };
+        })
+      );
+
+      return responseData;
+    } catch (error) {
+      // Log the error for debugging purposes (optional)
+      console.error("Error fetching properties:", error);
+      throw error; // Rethrow the original error
+    }
+  }
 }
 
 module.exports = PropertyService;

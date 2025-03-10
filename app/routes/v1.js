@@ -29,6 +29,8 @@ router
   .get(propertyController.getProperty)
   .delete(propertyController.deleteProperty);
 
+router.post("/properties", propertyController.getAllProperties);
+
 /**
  * Image Routes
  */

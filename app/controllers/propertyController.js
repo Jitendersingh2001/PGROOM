@@ -79,6 +79,18 @@ class propertyController extends Controller {
       this.sendErrorResponse(res, error);
     }
   };
+
+  /**
+   * function to get all properties
+   */
+  getAllProperties = async (req, res) => {
+    try {
+      const result = await this.propertyService.getAllProperties(req);
+      this.sendResponse(res, result, constMessage.FETCH_SUCCESSFUL.replace(":name", "Property"), http.OK);
+    } catch (error) {
+      this.sendErrorResponse(res, error);
+    }
+  };
 }
 
 module.exports = new propertyController(new propertyService());
