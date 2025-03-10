@@ -55,7 +55,7 @@ class PropertyRepository {
     }
   }
 
-  async getAllProperties(userId, page = 1, limit = 10) {
+  async getAllProperties(userId, page, limit) {
     try {
       const queryOptions = {
         where: {
