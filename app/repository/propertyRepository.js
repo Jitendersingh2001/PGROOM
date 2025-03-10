@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const constant = require("../constant/constant");
 
 class PropertyRepository {
   constructor() {
@@ -49,6 +50,29 @@ class PropertyRepository {
       });
 
       return updatedProperty;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async getAllProperties(userId) {
+    try {
+      // Fetch all active properties along with state and city details
+      const properties = await this.prisma.UserProperties.findMany({
+        where: {
+          userId: userId,
+          status: constant.ACTIVE,
+        },
+        include: {
+          user: {
+            include: {
+              state: true,
+              city: true,
+            },
+          },
+        },
+      });
+      return properties;
     } catch (error) {
       throw new Error(error.message);
     }

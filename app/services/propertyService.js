@@ -217,54 +217,44 @@ class PropertyService {
       throw new Error(error);
     }
   }
-  /**
-   * Function to get all properties for the authenticated user.
-   */
+
   async getAllProperties(req) {
     try {
       // Get authenticated user ID
       const userId = req.authUser.userId;
 
-      // Fetch all active properties along with state and city details
-      const properties = await this.prisma.UserProperties.findMany({
-        where: {
-          userId: userId,
-          status: constant.ACTIVE,
-        },
-        include: {
-          user: {
-            include: {
-              state: true,
-              city: true,
-            },
-          },
-        },
-      });
+      // Fetch all active properties from the repository
+      const properties = await this.propertyRepository.getAllProperties(userId);
+
+      // Extract all property images that need signed URLs
+      const propertyImages = properties
+        .filter((property) => property.propertyImage)
+        .map((property) => property.propertyImage);
+
+      // Batch generate signed URLs for all property images
+      const signedUrls = await Promise.all(
+        propertyImages.map((image) => getFileFromS3(image, constant.S3_EXPIRY))
+      );
+
+      // Create a map of propertyImage to signed URL for quick lookup
+      const imageSignedUrlMap = new Map(
+        propertyImages.map((image, index) => [image, signedUrls[index]])
+      );
 
       // Transform the properties array into the desired response format
-      const responseData = await Promise.all(
-        properties.map(async (property) => {
-          // Generate signed URL for the property image if it exists
-          let propertyImage = null;
-          if (property.propertyImage) {
-            propertyImage = await getFileFromS3(
-              property.propertyImage,
-              constant.S3_EXPIRY
-            );
-          }
-
-          // Construct the final response object for each property
-          return {
-            id: property.id,
-            state: property.user.state.stateName,
-            city: property.user.city.cityName,
-            propertyName: property.propertyName,
-            propertyImage: propertyImage,
-            propertyAddress: property.propertyAddress,
-            propertyContact: property.propertyContact,
-          };
-        })
-      );
+      const responseData = properties.map((property) => {
+        return {
+          id: property.id,
+          state: property.user.state.stateName,
+          city: property.user.city.cityName,
+          propertyName: property.propertyName,
+          propertyImage: property.propertyImage
+            ? imageSignedUrlMap.get(property.propertyImage)
+            : null,
+          propertyAddress: property.propertyAddress,
+          propertyContact: property.propertyContact,
+        };
+      });
 
       return responseData;
     } catch (error) {
