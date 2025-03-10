@@ -268,9 +268,7 @@ class PropertyService {
 
       return responseData;
     } catch (error) {
-      // Log the error for debugging purposes (optional)
-      console.error("Error fetching properties:", error);
-      throw error; // Rethrow the original error
+      throw error;
     }
   }
 }
