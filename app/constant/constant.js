@@ -11,6 +11,7 @@ const constant = {
     PROPERTY_FOLDER: "PropertyImages",
     S3_EXPIRY: 86400,
     NOT_FOUND: "not found",
+    DEVELOPMENT: "development"
 };
 
 module.exports = constant;

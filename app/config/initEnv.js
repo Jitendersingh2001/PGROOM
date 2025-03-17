@@ -1,12 +1,12 @@
 // initEnv.js
 const dotenv = require("dotenv");
+const constant = require("../constant/constant");
 
-// Load the environment variables from the .env file
-const result = dotenv.config();
-
-// Check if there was an issue loading the .env file
-if (result.error) {
-  throw result.error;
+if (process.env.APP_ENV === constant.DEVELOPMENT) {
+  const result = dotenv.config();
+  if (result.error) {
+    console.warn("⚠️  Warning: Could not load .env file. Make sure it exists.");
+  }
 }
 
 const config = {
