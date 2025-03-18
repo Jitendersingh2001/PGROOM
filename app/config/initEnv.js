@@ -2,10 +2,11 @@
 const dotenv = require("dotenv");
 const constant = require("../constant/constant");
 
-if (process.env.APP_ENV === constant.DEVELOPMENT) {
+// Load .env only if not in Railway (production environment)
+if (process.env.APP_ENV !== constant.PRODUCTION) {
   const result = dotenv.config();
   if (result.error) {
-    console.warn("⚠️  Warning: Could not load .env file. Make sure it exists.");
+    console.warn("⚠️ Warning: Could not load .env file. Make sure it exists locally.");
   }
 }
 
