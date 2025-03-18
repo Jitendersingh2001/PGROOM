@@ -3,6 +3,7 @@ const config = require("../config/initEnv");
 const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
 const http = require("../constant/statusCodes");
+const { PutObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 
 class helper {
   sendError = (res, message, statusCode) => {
@@ -39,11 +40,10 @@ class helper {
         ContentType: fileType,
       };
 
-      // Upload the file to S3
-      const uploadedFile = await s3.upload(params).promise();
-
+      // Upload the file using PutObjectCommand
+      await s3.send(new PutObjectCommand(params));
       // Return the file Name
-      return uploadedFile.Key;
+      return `${folderName}/${fileName}`;
     } catch (error) {
       console.error("Error uploading file to S3:", error);
       throw error; // Re-throw the error for further handling
