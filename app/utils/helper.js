@@ -3,7 +3,8 @@ const config = require("../config/initEnv");
 const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
 const http = require("../constant/statusCodes");
-const { PutObjectCommand, S3Client } = require("@aws-sdk/client-s3");
+const { PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 class helper {
   sendError = (res, message, statusCode) => {
@@ -52,15 +53,12 @@ class helper {
 
   getFileFromS3 = async (fileName, expiresIn) => {
     try {
-      // Define S3 get parameters
-      const params = {
+      const command = new GetObjectCommand({
         Bucket: constant.S3_BUCKET_NAME,
         Key: fileName,
-        Expires: expiresIn,
-      };
+      });
 
-      // Get the file from S3
-      return await s3.getSignedUrlPromise('getObject', params);
+      return await getSignedUrl(s3, command, { expiresIn });
     } catch (error) {
       console.error("Error getting file from S3:", error);
       throw error;
