@@ -91,6 +91,18 @@ class propertyController extends Controller {
       this.sendErrorResponse(res, error);
     }
   };
+
+  /**
+   * function to update property status
+   */
+  updatePropertyStatus = async (req, res) => {
+    try {
+      const result = await this.propertyService.updatePropertyStatus(req);
+      this.sendResponse(res, result, constMessage.UPDATED_SUCCESSFULLY.replace(":name", "Property Status"), http.OK);
+    } catch (error) {
+      this.sendErrorResponse(res, error);
+    }
+  }
 }
 
 module.exports = new propertyController(new propertyService());

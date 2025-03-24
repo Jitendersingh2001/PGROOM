@@ -81,6 +81,22 @@ class PropertyRepository {
       throw new Error(error.message);
     }
   }
+
+  async updatePropertyStatus(id, status) {
+    try {
+      const updatedProperty = await this.prisma.UserProperties.update({
+        where: {
+          id: id,
+        },
+        data: {
+          status: status,
+        },
+      });
+      return updatedProperty;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 }
 
 module.exports = PropertyRepository;

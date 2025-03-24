@@ -30,6 +30,7 @@ router
   .delete(propertyController.deleteProperty);
 
 router.post("/properties", propertyController.getAllProperties);
+router.put("/propertyStatus",validateRequest(validators.propertyStatusValidator), propertyController.updatePropertyStatus);
 
 /**
  * Image Routes

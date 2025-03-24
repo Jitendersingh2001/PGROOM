@@ -275,6 +275,21 @@ class PropertyService {
       throw error;
     }
   }
+
+  /**
+   * Function to update property status
+   */
+  async updatePropertyStatus(req) {
+    try {
+      // Extract the property ID and status from the request body
+      const { id, status } = req.body;
+
+      // Update the property status in the repository
+      return await this.propertyRepository.updatePropertyStatus(id, status);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = PropertyService;
