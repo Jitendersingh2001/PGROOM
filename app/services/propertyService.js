@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient, PropertyStatus } = require("@prisma/client");
 const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
 const {
@@ -39,8 +39,8 @@ class PropertyService {
         userId,
         state,
         city,
-        imageName,
         data.propertyName,
+        imageName,
         data.propertyContact,
         data.propertyAddress,
         constant.ACTIVE
@@ -119,6 +119,7 @@ class PropertyService {
         propertyImage: propertyImage,
         propertyAddress: property.propertyAddress,
         propertyContact: property.propertyContact,
+        PropertyStatus : property.status
       };
 
       return responseData;
@@ -259,6 +260,7 @@ class PropertyService {
           propertyImage: property.propertyImage
             ? imageSignedUrlMap.get(property.propertyImage)
             : null,
+          PropertyStatus: property.status,
           propertyAddress: property.propertyAddress,
           propertyContact: property.propertyContact,
         };

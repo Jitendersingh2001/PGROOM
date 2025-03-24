@@ -3,7 +3,7 @@ const config = require("../config/initEnv");
 const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
 const http = require("../constant/statusCodes");
-const { PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { PutObjectCommand, GetObjectCommand, DeleteObjectCommand} = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 class helper {
@@ -73,8 +73,11 @@ class helper {
         Key: fileName,
       };
 
-      // Delete the file from S3
-      return await s3.deleteObject(params).promise();
+      // Create and send delete command
+      const command = new DeleteObjectCommand(params);
+      await s3.send(command);
+
+      return { success: true, message: "File deleted successfully" };
     } catch (error) {
       console.error("Error deleting file from S3:", error);
       throw error;

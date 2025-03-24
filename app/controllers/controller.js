@@ -15,7 +15,7 @@ class Controller {
     sendErrorResponse = (res, error) => {
         logger.error(error);
         const response = {
-            message: error,
+            message: constMessage.SOMETHING_WENT_WRONG,
             statusCode: error.statusCode ?? http.INTERNAL_SERVER_ERROR,
         };
         return res.json(response);
