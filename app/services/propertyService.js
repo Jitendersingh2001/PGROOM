@@ -119,7 +119,7 @@ class PropertyService {
         propertyImage: propertyImage,
         propertyAddress: property.propertyAddress,
         propertyContact: property.propertyContact,
-        PropertyStatus : property.status
+        propertyStatus : property.status
       };
 
       return responseData;
@@ -260,7 +260,7 @@ class PropertyService {
           propertyImage: property.propertyImage
             ? imageSignedUrlMap.get(property.propertyImage)
             : null,
-          PropertyStatus: property.status,
+          propertyStatus: property.status,
           propertyAddress: property.propertyAddress,
           propertyContact: property.propertyContact,
         };
