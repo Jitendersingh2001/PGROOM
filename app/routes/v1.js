@@ -11,8 +11,7 @@ const uploadImages = upload.array("images", 10);
 /**
  * Property Routes
  */
-router
-  .route("/property")
+router.route("/property")
   .post(
     uploadImages,
     validateRequest(validators.propertyValidator),
@@ -24,17 +23,25 @@ router
     propertyController.updateProperty
   );
 
-router
-  .route("/property/:id")
+router.route("/property/:id")
   .get(propertyController.getProperty)
   .delete(propertyController.deleteProperty);
 
 router.post("/properties", propertyController.getAllProperties);
-router.put("/propertyStatus",validateRequest(validators.propertyStatusValidator), propertyController.updatePropertyStatus);
+
+router.put(
+  "/propertyStatus",
+  validateRequest(validators.propertyStatusValidator),
+  propertyController.updatePropertyStatus
+);
 
 /**
  * Image Routes
  */
-router.post("/uploadImage", uploadImages, imageController.uploadImage);
+router.post(
+  "/uploadImage",
+  uploadImages,
+  imageController.uploadImage
+);
 
 module.exports = router;
