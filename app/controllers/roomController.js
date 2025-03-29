@@ -1,13 +1,13 @@
-const propertyService = require("../services/propertyService");
+const roomService = require("../services/roomService");
 const Controller = require("./controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const constant = require("../constant/constant");
 
 class roomController extends Controller {
-  constructor(propertyService) {
+  constructor(roomService) {
     super();
-    this.propertyService = propertyService;
+    this.roomService = roomService;
   }
 
     /**
@@ -15,7 +15,7 @@ class roomController extends Controller {
      */
     addRoom = async (req, res) => {
         try {
-            const result = "hellp";
+            const result = await this.roomService.addRoom(req.body, req.files);
             this.sendResponse(
                 res,
                 result,
@@ -28,4 +28,4 @@ class roomController extends Controller {
     }
 }
 
-module.exports = new roomController(new propertyService());
+module.exports = new roomController(roomService);
