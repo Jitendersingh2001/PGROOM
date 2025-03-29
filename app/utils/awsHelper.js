@@ -20,10 +20,10 @@ class awsHelper {
       const key = `${folderName}/${fileName}`;
       // Define S3 upload parameters
       const params = {
-        Bucket: this.bucketName, // Name of the S3 bucket
+        Bucket: this.bucketName,
         Key: key,
-        Body: fileBuffer, // File content as a buffer
-        ContentType: fileType, // MIME type of the file
+        Body: fileBuffer,
+        ContentType: fileType,
       };
       await s3Config.sendCommand(
         new PutObjectCommand(params)
