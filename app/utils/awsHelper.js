@@ -1,4 +1,5 @@
-const s3 = require("../config/awsS3");
+const awsS3Config = require("../config/awsS3Config");
+const s3Config = awsS3Config.defaultInstance;
 const { 
   PutObjectCommand, 
   GetObjectCommand, 
@@ -6,76 +7,60 @@ const {
   ListObjectsV2Command,
   DeleteObjectsCommand 
 } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 class awsHelper {
-  /**
-   * Uploads a file to an S3 bucket.
-   * @param {Buffer} fileBuffer - The file content as a buffer.
-   * @param {string} fileName - The name of the file to be uploaded.
-   * @param {string} fileType - The MIME type of the file (e.g., 'image/jpeg').
-   * @param {string} folderName - The folder in the S3 bucket where the file will be stored.
-   * @returns {Promise<string>} - The full S3 key (path) of the uploaded file.
-   * @throws {Error} - Throws an error if the upload fails.
-   */
+  constructor() {
+    // Initialize the S3 client
+    this.s3 = s3Config.getS3Client();
+    this.bucketName = s3Config.getBucketName();
+  }
+
   uploadFileToS3 = async (fileBuffer, fileName, fileType, folderName) => {
     try {
+      const key = `${folderName}/${fileName}`;
       // Define S3 upload parameters
       const params = {
-        Bucket: constant.S3_BUCKET_NAME, // Name of the S3 bucket
-        Key: `${folderName}/${fileName}`, // Full path (key) for the file in S3
+        Bucket: this.bucketName, // Name of the S3 bucket
+        Key: key,
         Body: fileBuffer, // File content as a buffer
         ContentType: fileType, // MIME type of the file
       };
-
-      // Upload the file using PutObjectCommand
-      await s3.send(new PutObjectCommand(params));
-
-      // Return the full S3 key (path) of the uploaded file
-      return `${folderName}/${fileName}`;
+      await s3Config.sendCommand(
+        new PutObjectCommand(params)
+      );
+  
+      return key;
     } catch (error) {
       throw error;
     }
   };
 
-  /**
-   * Generates a signed URL for accessing a file in S3.
-   * @param {string} fileName - The S3 key (path) of the file.
-   * @param {number} expiresIn - The duration (in seconds) for which the signed URL is valid.
-   * @returns {Promise<string>} - The signed URL for accessing the file.
-   * @throws {Error} - Throws an error if the signed URL generation fails.
-   */
   getFileFromS3 = async (fileName, expiresIn) => {
     try {
       const command = new GetObjectCommand({
-        Bucket: constant.S3_BUCKET_NAME,
+        Bucket: this.bucketName,
         Key: fileName,
       });
 
       // Generate and return a signed URL for the file
-      return await getSignedUrl(s3, command, { expiresIn });
+      return await s3Config.getSignedUrl(command, { expiresIn });
     } catch (error) {
       throw error;
     }
   };
 
-  /**
-   * Deletes a single file from an S3 bucket.
-   * @param {string} fileName - The S3 key (path) of the file to delete.
-   * @returns {Promise<object>} - A success message indicating the file was deleted.
-   * @throws {Error} - Throws an error if the deletion fails.
-   */
+
   deleteFileFromS3 = async (fileName) => {
     try {
       // Define S3 delete parameters
       const params = {
-        Bucket: constant.S3_BUCKET_NAME,
+        Bucket: this.bucketName,
         Key: fileName,
       };
 
       // Create and send the delete command
       const command = new DeleteObjectCommand(params);
-      await s3.send(command);
+      await s3Config.sendCommand(command);
 
       // Return a success message
       return { success: true, message: "File deleted successfully" };
@@ -84,22 +69,16 @@ class awsHelper {
     }
   };
 
-  /**
-   * Deletes all files within a folder in an S3 bucket.
-   * @param {string} folderPath - The S3 key prefix (path) of the folder to delete.
-   * @returns {Promise<object>} - A success message indicating the folder was deleted.
-   * @throws {Error} - Throws an error if the deletion fails.
-   */
   deleteFolderFromS3 = async (folderPath) => {
     try {
       // First, list all objects in the folder
       const listParams = {
-        Bucket: constant.S3_BUCKET_NAME,
+        Bucket: this.bucketName,
         Prefix: folderPath,
       };
 
       const listCommand = new ListObjectsV2Command(listParams);
-      const listedObjects = await s3.send(listCommand);
+      const listedObjects = await s3Config.sendCommand(listCommand);
 
       // If no objects found, return success
       if (!listedObjects.Contents || listedObjects.Contents.length === 0) {
@@ -108,7 +87,7 @@ class awsHelper {
 
       // Prepare objects for deletion
       const deleteParams = {
-        Bucket: constant.S3_BUCKET_NAME,
+        Bucket: this.bucketName,
         Delete: {
           Objects: listedObjects.Contents.map(({ Key }) => ({ Key })),
           Quiet: false, // Set to true to reduce response verbosity
@@ -117,7 +96,7 @@ class awsHelper {
 
       // Delete all objects
       const deleteCommand = new DeleteObjectsCommand(deleteParams);
-      await s3.send(deleteCommand);
+      await s3Config.sendCommand(deleteCommand);
 
       // Handle pagination if more than 1000 objects
       if (listedObjects.IsTruncated) {

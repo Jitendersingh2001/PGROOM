@@ -1,5 +1,3 @@
-const { PrismaClient, PropertyStatus } = require("@prisma/client");
-const s3 = require("../config/awsS3");
 const constant = require("../constant/constant");
 const {
   uploadFileToS3,
@@ -11,7 +9,6 @@ const roomRepository = require("../repository/roomRepository");
 
 class RoomService {
   constructor(repository) {
-    this.prisma = new PrismaClient();
     this.repository = repository;
   }
 

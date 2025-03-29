@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/initEnv");
-const constant = require("../constant/constant");
 const http = require("../constant/statusCodes");
 
 class helper {
