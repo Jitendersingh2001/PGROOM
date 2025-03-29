@@ -63,19 +63,18 @@ model UserProperties {
 }
 
 model Rooms {
-  id              Int               @id @default(autoincrement())
-  propertyId      Int
-  roomNo          Int
-  roomImage       String            @db.VarChar
-  totalBed        Int
-  status          RoomStatus
-  description     String            @db.VarChar
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  electricityBill ElectricityBill[]
-  rent            Rent[]
-  userProperties  UserProperties    @relation(fields: [propertyId], references: [id])
-  tenant          Tenant[]
+  id             Int            @id @default(autoincrement())
+  propertyId     Int
+  roomNo         Int
+  roomImage      String         @db.VarChar
+  totalBed       Int
+  status         RoomStatus
+  description    String         @db.VarChar
+  rent           String         @db.VarChar
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  userProperties UserProperties @relation(fields: [propertyId], references: [id])
+  Tenant         Tenant[]
 }
 
 model Tenant {
@@ -86,32 +85,8 @@ model Tenant {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   userProperties UserProperties @relation(fields: [propertyId], references: [id])
-  rooms          Rooms          @relation(fields: [roomId], references: [id])
+  Rooms          Rooms          @relation(fields: [roomId], references: [id])
   user           User           @relation(fields: [userId], references: [id])
-}
-
-model Rent {
-  id            Int           @id @default(autoincrement())
-  amount        Int
-  roomId        Int
-  paymentMethod PaymentMethod
-  upiId         String?       @db.VarChar
-  status        RentStatus
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  rooms         Rooms         @relation(fields: [roomId], references: [id])
-}
-
-model ElectricityBill {
-  id            Int           @id @default(autoincrement())
-  roomId        Int
-  amount        Int
-  paymentMethod PaymentMethod
-  upiId         String?       @db.VarChar
-  status        BillStatus
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  rooms         Rooms         @relation(fields: [roomId], references: [id])
 }
 
 model State {
@@ -162,11 +137,6 @@ enum PaymentMethod {
 }
 
 enum RentStatus {
-  Paid
-  Unpaid
-}
-
-enum BillStatus {
   Paid
   Unpaid
 }
