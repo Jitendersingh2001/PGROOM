@@ -18,10 +18,11 @@ class RoomService {
     /**
      * Function to add room
      */
-    addRoom = async (roomData, files) => {
+    async addRoom(roomData, images) {
         try {
             console.log("roomData", roomData);
-            console.log("files", files);
+            console.log("files", images);
+            const folderName = roomData.propertyId;
             return "hello";
         } catch (error) {
             throw error;
