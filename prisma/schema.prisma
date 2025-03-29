@@ -66,7 +66,7 @@ model Rooms {
   id             Int            @id @default(autoincrement())
   propertyId     Int
   roomNo         Int
-  roomImage      String         @db.VarChar
+  roomImage      Json         
   totalBed       Int
   status         RoomStatus
   description    String         @db.VarChar

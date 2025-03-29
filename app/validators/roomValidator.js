@@ -22,6 +22,13 @@ const roomValidator = Joi.object({
         "any.required": "Rent is required",
         "number.base": "Rent must be a number",
     }),
+    status: Joi.string()
+    .valid("Available", "Occupied")
+    .required()
+    .messages({
+        "any.required": "Status is required",
+        "any.only": "Status must be either 'Available' or 'Occupied'",
+    }),
 
 });
 
