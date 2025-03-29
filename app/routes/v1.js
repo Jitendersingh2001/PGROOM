@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const propertyController = require("../controllers/propertyController");
-const imageController = require("../controllers/imageController");
+const controller = require("../controllers/index");
 const validators = require("../validators/index");
 const validateRequest = require("../middleware/validationMiddleware");
 const upload = require("../middleware/multerMiddleware");
@@ -15,25 +14,37 @@ router.route("/property")
   .post(
     uploadImages,
     validateRequest(validators.propertyValidator),
-    propertyController.addProperty
+    controller.propertyController.addProperty
   )
   .put(
     uploadImages,
     validateRequest(validators.propertyValidator),
-    propertyController.updateProperty
+    controller.propertyController.updateProperty
   );
 
 router.route("/property/:id")
-  .get(propertyController.getProperty)
-  .delete(propertyController.deleteProperty);
+  .get(controller.propertyController.getProperty)
+  .delete(controller.propertyController.deleteProperty);
 
-router.post("/properties", propertyController.getAllProperties);
+router.post("/properties", controller.propertyController.getAllProperties);
 
 router.put(
   "/propertyStatus",
   validateRequest(validators.propertyStatusValidator),
-  propertyController.updatePropertyStatus
+  controller.propertyController.updatePropertyStatus
 );
+
+
+/**
+ * ROOM ROUTES
+ */
+
+router.route("/room")
+  .post(
+    uploadImages,
+    validateRequest(validators.roomValidator),
+    controller.roomController.addRoom
+  );
 
 /**
  * Image Routes
@@ -41,7 +52,7 @@ router.put(
 router.post(
   "/uploadImage",
   uploadImages,
-  imageController.uploadImage
+  controller.imageController.uploadImage
 );
 
 module.exports = router;
