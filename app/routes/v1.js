@@ -8,8 +8,6 @@ const {
   validateFileUpload,
 } = require("../middleware/multerMiddleware");
 
-// const uploadImages = upload.array("images", 10);
-
 /**
  * Property Routes
  */
