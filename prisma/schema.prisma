@@ -135,8 +135,3 @@ enum PaymentMethod {
   Cash
   UPI
 }
-
-enum RentStatus {
-  Paid
-  Unpaid
-}
