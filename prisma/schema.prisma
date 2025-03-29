@@ -67,6 +67,7 @@ model Rooms {
   propertyId      Int
   roomNo          Int
   roomImage       String            @db.VarChar
+  totalBed        Int
   status          RoomStatus
   description     String            @db.VarChar
   createdAt       DateTime          @default(now())
