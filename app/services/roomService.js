@@ -20,6 +20,8 @@ class RoomService {
      */
     addRoom = async (roomData, files) => {
         try {
+            console.log("roomData", roomData);
+            console.log("files", files);
             return "hello";
         } catch (error) {
             throw error;

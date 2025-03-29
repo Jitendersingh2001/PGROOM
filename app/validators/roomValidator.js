@@ -14,10 +14,15 @@ const roomValidator = Joi.object({
         "any.required": "Total Beds is required",
         "number.base": "Total Beds must be a number",
     }),
-    Description: Joi.string().required().empty(["", null]).messages({
+    description: Joi.string().required().empty(["", null]).messages({
         "any.required": "Description is required",
         "string.base": "Description must be a string",
     }),
+    rent: Joi.number().required().empty(["", null]).messages({
+        "any.required": "Rent is required",
+        "number.base": "Rent must be a number",
+    }),
+
 });
 
 module.exports = roomValidator;
