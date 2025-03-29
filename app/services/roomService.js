@@ -38,26 +38,21 @@ class RoomService {
             throw error;
         }
     }
-
+    
     async createOrUpdateImages(images, subFolder) {
         try {
-            let uploadImage = [];
-            for (const image of images) {
-                const uniqueFileName = `${uuidv4()}-${image.originalname}`;
-                const roomFolder = `${constant.ROOM_FOLDER}/${subFolder}`;
-                const imageName = await uploadFileToS3(
-                    image.buffer,
-                    uniqueFileName,
-                    image.mimetype,
-                    roomFolder
-                );
-                uploadImage.push(imageName);
-            }
-            return uploadImage;
+          const roomFolder = `${constant.ROOM_FOLDER}/${subFolder}`;
+          const uploadPromises = images.map(async (image) => {
+            const uniqueFileName = `${uuidv4()}-${image.originalname}`;
+            return uploadFileToS3(image.buffer, uniqueFileName, image.mimetype, roomFolder);
+          });
+    
+          // Wait for all uploads to complete
+          return Promise.all(uploadPromises);
         } catch (error) {
-            throw error;
+          throw error;
         }
-    }
+      }
 }
 
 module.exports = new RoomService(roomRepository);
