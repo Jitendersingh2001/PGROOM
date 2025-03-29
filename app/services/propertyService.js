@@ -5,7 +5,7 @@ const {
   uploadFileToS3,
   getFileFromS3,
   deleteFileFromS3,
-} = require("../utils/helper");
+} = require("../utils/awsHelper");
 const { v4: uuidv4 } = require("uuid");
 const propertyRepository = require("../repository/propertyRepository");
 
