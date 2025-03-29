@@ -29,6 +29,7 @@ const roomValidator = Joi.object({
         "any.required": "Status is required",
         "any.only": "Status must be either 'Available' or 'Occupied'",
     }),
+    id: Joi.string().optional(),
 
 });
 

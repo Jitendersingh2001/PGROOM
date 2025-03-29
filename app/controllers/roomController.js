@@ -26,6 +26,23 @@ class roomController extends Controller {
             this.sendErrorResponse(res, error);
         }
     }
+
+    /**
+     * Function to update room
+     */
+    updateRoom = async (req, res) => {
+        try {
+            const result = await this.roomService.updateRoom(req.body, req.files);
+            this.sendResponse(
+                res,
+                result,
+                constMessage.UPDATED_SUCCESSFULLY.replace(":name", "Room"),
+                http.OK
+            );
+        } catch (error) {
+            this.sendErrorResponse(res, error);
+        }
+    }
 }
 
 module.exports = new roomController(roomService);
