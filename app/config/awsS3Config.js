@@ -35,10 +35,8 @@ class AwsS3Config {
   }
 
   /**
-   * Sends an S3 command and returns the response.
-   * @param {Object} command - The S3 command to execute.
-   * @returns {Promise<Object>} - The response from the S3 service.
-   */
+   * Sends a command to the S3 client.
+   **/
   async sendCommand(command) {
     try {
       return await this.#s3Client.send(command);
@@ -49,10 +47,7 @@ class AwsS3Config {
   }
 
   /**
-   * Generates a signed URL for an S3 object.
-   * @param {Object} command - The S3 command (e.g., GetObjectCommand).
-   * @param {Object} options - Options for generating the signed URL.
-   * @returns {Promise<string>} - The signed URL.
+   * Generates a signed URL for the specified command.
    */
   async getSignedUrl(command, options) {
     try {
