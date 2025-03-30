@@ -8,6 +8,23 @@ class userRepository {
     this.prisma = prismaClient || new PrismaClient();
   }
 
+  #buildSearchConditions(searchInput, searchFields) {
+    if (!searchInput) return undefined;
+
+    return searchFields.map((field) => ({
+      [field]: { contains: searchInput, mode: "insensitive" },
+    }));
+  }
+
+  #buildSelectedColumns(defaultColumns, additionalColumns) {
+    return additionalColumns.reduce(
+      (acc, column) => {
+        acc[column] = true;
+        return acc;
+      },
+      { ...defaultColumns }
+    );
+  }
   /**
    * function to get user ids by role id
    */
@@ -20,11 +37,6 @@ class userRepository {
     additionalColumns = []
   ) {
     try {
-      const searchConditions = searchInput
-        ? searchFields.map((field) => ({
-            [field]: { contains: searchInput, mode: "insensitive" },
-          }))
-        : undefined;
       const defaultColumns = {
         id: true,
         firstName: true,
@@ -32,14 +44,16 @@ class userRepository {
         email: true,
         status: true,
       };
-      // Merge default columns with additional ones
-      const selectedColumns = additionalColumns.reduce(
-        (acc, column) => {
-          acc[column] = true;
-          return acc;
-        },
-        { ...defaultColumns }
+      // Build reusable components
+      const searchConditions = this.#buildSearchConditions(
+        searchInput,
+        searchFields
       );
+      const selectedColumns = this.#buildSelectedColumns(
+        defaultColumns,
+        additionalColumns
+      );
+
       const queryOptions = {
         where: {
           roleId: roleId,
