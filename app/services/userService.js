@@ -2,9 +2,8 @@ const constant = require("../constant/constant");
 const userRepository = require("../repository/userRepository");
 const tenantRepository = require("../repository/tenantRepository");
 
-
 class userService {
-  constructor(repository,tenantRepository) {
+  constructor(repository, tenantRepository) {
     this.repository = repository;
     this.tenantRepository = tenantRepository;
   }
@@ -14,47 +13,41 @@ class userService {
    */
   async getTenants(data) {
     try {
-      // Parse pagination parameters
-      const page = parseInt(data.page, 10) || 1;
-      const limit = parseInt(data.limit, 10) || 10;
+      const page = Number(data.page) || 1;
+      const limit = Number(data.limit) || 10;
       const searchFields = ["firstName", "lastName"];
-  
-      // Fetch users with the specified role and search criteria
-      const users = await this.repository.getUsersByRoleId(
-        constant.TENANT_ROLE_ID,
-        data.search,
-        searchFields,
-        page,
-        limit
+
+      // Fetch users and tenant user IDs
+      const [users, tenantUserIds] = await Promise.all([
+        this.repository.getUsersByRoleId(
+          constant.TENANT_ROLE_ID,
+          data.search,
+          searchFields,
+          page,
+          limit
+        ),
+        this.tenantRepository.getTenantUserIds(),
+      ]);
+
+      // Convert tenantUserIds array to Set for optimized lookups
+      const tenantUserIdSet = new Set(tenantUserIds);
+      const filteredUsers = users.data.filter(
+        (user) => !tenantUserIdSet.has(user.user.id)
       );
-  
-      // Fetch tenant user IDs to exclude
-      const tenantUserId = await this.tenantRepository.getTenantUserIds();
-  
-      // Filter out users whose IDs are in tenantUserId
-      const filteredUsers = users.data.filter(user => 
-        !tenantUserId.includes(user.user.id)
-      );
-  
-      // Calculate updated metadata after filtering
-      const totalFiltered = filteredUsers.length;
-      const totalPages = Math.ceil(totalFiltered / limit);
-  
-      // Construct the final response
+
       return {
         data: filteredUsers,
         meta: {
-          total: totalFiltered,
-          page: page,
-          limit: limit,
-          totalPages: totalPages
-        }
+          total: filteredUsers.length,
+          page,
+          limit,
+          totalPages: Math.ceil(filteredUsers.length / limit),
+        },
       };
     } catch (error) {
-      // Rethrow the error for upstream handling
       throw error;
     }
   }
 }
 
-module.exports = new userService(userRepository,tenantRepository);
+module.exports = new userService(userRepository, tenantRepository);
