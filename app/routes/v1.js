@@ -76,5 +76,9 @@ router.get("/getTenants", controller.userController.getTenants);
  */
 router.post("/tenant",
   validateRequest(validators.tenantValidator),
-  controller.tenantController.createTenant);
+  controller.tenantController.createTenant)
+  .put(
+    validateRequest(validators.tenantValidator),
+    controller.tenantController.updateTenant
+  );
 module.exports = router;
