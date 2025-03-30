@@ -59,6 +59,11 @@ router
   );
 
 router.post("/rooms", controller.roomController.getAllRooms);
+
+router
+  .route("/room/:id")
+  .get(controller.roomController.getRoom)
+  .delete(controller.roomController.deleteRoom);
 /**
  * Image Routes
  */
