@@ -165,6 +165,25 @@ class RoomService {
       throw error;
     }
   }
+  /**
+   * Function to delete room
+   */
+  async deleteRoom(id) {
+    try {
+      // Parse the room ID
+      const roomId = parseInt(id, 10);
+      const room = await this.repository.getRoom(roomId);
+      const deletionResult = await deleteFolderFromS3(
+        `${constant.ROOM_FOLDER}/${room.propertyId}/`
+      );
+      if (!deletionResult) {
+        throw new Error(`Failed to delete folder: ${room.propertyId}`);
+      }
+      return await this.repository.updateRoomStatus(roomId, constant.DELETED);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new RoomService(roomRepository);

@@ -81,21 +81,12 @@ class roomController extends Controller {
   deleteRoom = async (req, res) => {
     try {
       const result = await this.roomService.deleteRoom(req.params.id);
-      if (result === constant.NOT_FOUND) {
-        this.sendResponse(
-          res,
-          result,
-          constMessage.NOT_FOUND.replace(":name", "Room"),
-          http.NOT_FOUND
-        );
-      } else {
-        this.sendResponse(
-          res,
-          result,
-          constMessage.DELETED_SUCCESSFULLY.replace(":name", "Room"),
-          http.OK
-        );
-      }
+      this.sendResponse(
+        res,
+        result,
+        constMessage.DELETED_SUCCESSFULLY.replace(":name", "Room"),
+        http.OK
+      );
     } catch (error) {
       this.sendErrorResponse(res, error);
     }

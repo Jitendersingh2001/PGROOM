@@ -56,6 +56,7 @@ class roomRepository {
       const queryOptions = {
         where: {
           propertyId: propertyId,
+          status: constant.ACTIVE,
         },
         orderBy: {
           id: 'asc',
@@ -76,6 +77,22 @@ class roomRepository {
         },
       });
       return room;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async updateRoomStatus(roomId, status) {
+    try {
+      const updatedRoom = await this.prisma.rooms.update({
+        where: {
+          id: roomId,
+        },
+        data: {
+          status: status,
+        },
+      });
+      return updatedRoom;
     } catch (error) {
       throw new Error(error.message);
     }
