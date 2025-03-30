@@ -64,13 +64,5 @@ router
   .route("/room/:id")
   .get(controller.roomController.getRoom)
   .delete(controller.roomController.deleteRoom);
-/**
- * Image Routes
- */
-router.post(
-  "/uploadImage",
-  uploadImages,
-  controller.imageController.uploadImage
-);
 
 module.exports = router;
