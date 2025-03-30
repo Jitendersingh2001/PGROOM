@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const constMessage = require("../constant/message");
+const constant = require("../constant/constant");
 
 const TenantExists = {
     validate: async (values, helpers) => {
@@ -10,7 +11,8 @@ const TenantExists = {
             // Check if the value exists in the tenant table's userId field
             const existingTenant = await prisma.tenant.findFirst({
               where: {
-                userId: userId, // Assuming `userId` is the field in the `tenant` table
+                userId: userId, 
+                status : constant.ACTIVE
               },
             });
       
