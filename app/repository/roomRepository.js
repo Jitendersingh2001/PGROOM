@@ -50,6 +50,23 @@ class roomRepository {
       throw new Error(error.message);
     }
   }
+
+  async getAllRooms(propertyId, page, limit) {
+    try {
+      const queryOptions = {
+        where: {
+          propertyId: propertyId,
+        },
+        orderBy: {
+          id: 'asc',
+        },
+      };
+      const result = await paginate(this.prisma.rooms, queryOptions, page, limit);
+      return result;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 }
 
 module.exports = new roomRepository();

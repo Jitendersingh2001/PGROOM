@@ -58,6 +58,7 @@ router
     controller.roomController.updateRoom
   );
 
+router.post("/rooms", controller.roomController.getAllRooms);
 /**
  * Image Routes
  */

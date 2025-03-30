@@ -43,6 +43,22 @@ class roomController extends Controller {
             this.sendErrorResponse(res, error);
         }
     }
+    /**
+     * Function to get all rooms
+     */
+    getAllRooms = async (req, res) => {
+        try {
+            const result = await this.roomService.getAllRooms(req.body);
+            this.sendResponse(
+                res,
+                result,
+                constMessage.FETCH_SUCCESSFUL.replace(":name", "Room"),
+                http.OK
+            );
+        } catch (error) {
+            this.sendErrorResponse(res, error);
+        }
+    }
 }
 
 module.exports = new roomController(roomService);

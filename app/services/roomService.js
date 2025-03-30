@@ -96,6 +96,54 @@ class RoomService {
       throw error;
     }
   }
+
+  /**
+   * Function to get all rooms
+   */
+  async getAllRooms(data) {
+    try {
+      // Parse input parameters
+      const propertyId = parseInt(data.propertyId, 10);
+      const page = parseInt(data.page, 10) || 1;
+      const limit = parseInt(data.limit, 10) || 10;
+
+      // Fetch paginated rooms from the repository
+      const paginatedResult = await this.repository.getAllRooms(
+        propertyId,
+        page,
+        limit
+      );
+
+      // Process each room to replace roomImage with signed URLs
+      const processedData = await Promise.all(
+        paginatedResult.data.map(async (room) => {
+          // Parse the roomImage JSON string into an array
+          const imagePaths = JSON.parse(room.roomImage);
+
+          // Generate signed URLs for each image path
+          const signedUrls = await Promise.all(
+            imagePaths.map(async (filePath) => {
+              return await getFileFromS3(filePath, constant.S3_EXPIRY);
+            })
+          );
+
+          // Replace roomImage with the array of signed URLs
+          return {
+            ...room,
+            roomImage: signedUrls,
+          };
+        })
+      );
+
+      // Return the updated paginated result
+      return {
+        ...paginatedResult,
+        data: processedData,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new RoomService(roomRepository);
