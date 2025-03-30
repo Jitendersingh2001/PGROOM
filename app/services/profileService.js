@@ -74,7 +74,7 @@ class profileService {
     try {
       const roleId = req.body.isAdmin
       ? constant.ADMIN_ROLE_ID
-      : constant.USER_ROLE_ID
+      : constant.TENANT_ROLE_ID;
       // Create the user
       const user = await this.prisma.user.create({
         data: {

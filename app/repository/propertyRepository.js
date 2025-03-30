@@ -10,7 +10,7 @@ class PropertyRepository {
    * Function to create a property
    */
   async #createProperty(propertyData) {
-    return this.prisma.UserProperties.create({
+    return this.prisma.userProperties.create({
       data: propertyData,
     });
   }
@@ -21,7 +21,7 @@ class PropertyRepository {
    * If the property exists, it will update the existing one
    */
   async #updateProperty(propertyId, propertyData) {
-    return this.prisma.UserProperties.upsert({
+    return this.prisma.userProperties.upsert({
       where: {
         id: propertyId,
       },
@@ -85,7 +85,7 @@ class PropertyRepository {
         },
       };
   
-      const result = await paginate(this.prisma.UserProperties, queryOptions, page, limit);
+      const result = await paginate(this.prisma.userProperties, queryOptions, page, limit);
       return result;
     } catch (error) {
       throw new Error(error.message);
@@ -94,7 +94,7 @@ class PropertyRepository {
 
   async updatePropertyStatus(id, status) {
     try {
-      const updatedProperty = await this.prisma.UserProperties.update({
+      const updatedProperty = await this.prisma.userProperties.update({
         where: {
           id: id,
         },

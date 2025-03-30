@@ -65,4 +65,9 @@ router
   .get(controller.roomController.getRoom)
   .delete(controller.roomController.deleteRoom);
 
+/**
+ * USER ROUTES
+ */
+router.get("/getTenants", controller.userController.getTenants);
+
 module.exports = router;
