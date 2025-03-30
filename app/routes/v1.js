@@ -74,5 +74,5 @@ router.get("/getTenants", controller.userController.getTenants);
 /**
  * TENANT ROUTES
  */
-router.post("/tenant", controller.tenantController.addTenant);
+router.post("/tenant", controller.tenantController.createTenant);
 module.exports = router;
