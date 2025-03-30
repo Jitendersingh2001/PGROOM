@@ -144,6 +144,27 @@ class RoomService {
       throw error;
     }
   }
+
+  /**
+   * Function to get room
+   */
+  async getRoom(id) {
+    try {
+      // Parse the room ID
+      const roomId = parseInt(id, 10);
+      const room = await this.repository.getRoom(roomId);
+      const imagePaths = JSON.parse(room.roomImage);
+      const signedUrls = await Promise.all(
+        imagePaths.map(async (filePath) => {
+          return await getFileFromS3(filePath, constant.S3_EXPIRY);
+        })
+      );
+      room.roomImage = signedUrls;
+      return room;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new RoomService(roomRepository);

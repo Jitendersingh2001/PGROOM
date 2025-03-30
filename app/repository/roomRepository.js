@@ -67,6 +67,19 @@ class roomRepository {
       throw new Error(error.message);
     }
   }
+
+  async getRoom(roomId) {
+    try {
+      const room = await this.prisma.rooms.findUnique({
+        where: {
+          id: roomId,
+        },
+      });
+      return room;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 }
 
 module.exports = new roomRepository();
