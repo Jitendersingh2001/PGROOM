@@ -12,19 +12,17 @@ class userRepository {
     /**
      * function to get user ids by role id
      */
-    async getUsersByRoleId(roleId, searchInput, page, limit) {
+    async getUsersByRoleId(roleId, searchInput, searchFields, page, limit) {
         try {
+            const searchConditions = searchInput
+            ? searchFields.map(field => ({ [field]: { contains: searchInput, mode: 'insensitive' } }))
+            : undefined;
             const queryOptions = {
                 where: {
                     roleId: roleId,
                     user: {
                         status: constant.ACTIVE,
-                        OR: searchInput
-                            ? [
-                                { firstName: { contains: searchInput, mode: 'insensitive' } },
-                                { lastName: { contains: searchInput, mode: 'insensitive' } }
-                            ]
-                            : undefined,
+                        OR: searchConditions,
                     },
                 },
                 select: {
