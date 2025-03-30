@@ -8,9 +8,9 @@ class roomRepository {
     this.prisma = prismaClient || new PrismaClient();
   }
 
- /**
-  * Function to create a room
-  */
+  /**
+   * Function to create a room
+   */
   async #createRoom(roomData) {
     return this.prisma.rooms.create({
       data: roomData,

@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const constant = require("../constant/constant");
-const {paginate} = require("../utils/helper");
+const { paginate } = require("../utils/helper");
 class PropertyRepository {
   constructor() {
     this.prisma = new PrismaClient();
@@ -55,11 +55,10 @@ class PropertyRepository {
         status,
       };
 
-       // If `id` is null, create a new property
-       return id === null
-       ? this.#createProperty(propertyData)
-         : this.#updateProperty(id, propertyData);
-      
+      // If `id` is null, create a new property
+      return id === null
+        ? this.#createProperty(propertyData)
+        : this.#updateProperty(id, propertyData);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -81,11 +80,16 @@ class PropertyRepository {
           },
         },
         orderBy: {
-          id: 'asc',
+          id: "asc",
         },
       };
-  
-      const result = await paginate(this.prisma.userProperties, queryOptions, page, limit);
+
+      const result = await paginate(
+        this.prisma.userProperties,
+        queryOptions,
+        page,
+        limit
+      );
       return result;
     } catch (error) {
       throw new Error(error.message);
