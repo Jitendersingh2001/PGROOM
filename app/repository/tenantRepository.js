@@ -58,6 +58,22 @@ class tenantRepository {
       throw error;
     }
   }
+
+  /**
+   * Function to get tenant user ids
+   */
+  async getTenantUserIds() {
+    try {
+      const tenants = await this.prisma.tenant.findMany({
+        select: {
+          userId: true,
+        },
+      });
+      return tenants.map((tenant) => tenant.userId);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new tenantRepository();
