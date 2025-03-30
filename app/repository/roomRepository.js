@@ -3,10 +3,38 @@ const constant = require("../constant/constant");
 const { paginate } = require("../utils/helper");
 
 class roomRepository {
-  constructor() {
-    this.prisma = new PrismaClient();
+  constructor(prismaClient) {
+    // Dependency injection for PrismaClient
+    this.prisma = prismaClient || new PrismaClient();
   }
 
+ /**
+  * Function to create a room
+  */
+  async #createRoom(roomData) {
+    return this.prisma.rooms.create({
+      data: roomData,
+    });
+  }
+
+  /**
+   * Function to update a room
+   * If the room does not exist, it will create a new one
+   * If the room exists, it will update the existing one
+   */
+  async #updateRoom(roomId, roomData) {
+    return this.prisma.rooms.upsert({
+      where: {
+        id: roomId,
+      },
+      update: roomData,
+      create: roomData,
+    });
+  }
+
+  /**
+   * Function to add or update a room
+   */
   async addOrUpdateRoom(
     propertyId,
     roomNo,
@@ -29,28 +57,17 @@ class roomRepository {
       };
 
       // If `id` is null, create a new property
-      if (id === null) {
-        const newRoom = await this.prisma.rooms.create({
-          data: roomData,
-        });
-        return newRoom;
-      }
-
-      // If `id` is provided, update the existing property
-      const updateRoom = await this.prisma.rooms.upsert({
-        where: {
-          id: id,
-        },
-        update: roomData,
-        create: roomData,
-      });
-
-      return updateRoom;
+      return id === null
+        ? this.#createRoom(roomData)
+        : this.#updateRoom(id, roomData);
     } catch (error) {
       throw new Error(error.message);
     }
   }
 
+  /**
+   * Function to get all rooms
+   */
   async getAllRooms(propertyId, page, limit) {
     try {
       const queryOptions = {
@@ -59,16 +76,24 @@ class roomRepository {
           status: constant.ACTIVE,
         },
         orderBy: {
-          id: 'asc',
+          id: "asc",
         },
       };
-      const result = await paginate(this.prisma.rooms, queryOptions, page, limit);
+      const result = await paginate(
+        this.prisma.rooms,
+        queryOptions,
+        page,
+        limit
+      );
       return result;
     } catch (error) {
       throw new Error(error.message);
     }
   }
 
+  /**
+   * Function to get a room by ID
+   */
   async getRoom(roomId) {
     try {
       const room = await this.prisma.rooms.findUnique({
@@ -82,6 +107,9 @@ class roomRepository {
     }
   }
 
+  /**
+   * Function to update the status of a room
+   */
   async updateRoomStatus(roomId, status) {
     try {
       const updatedRoom = await this.prisma.rooms.update({

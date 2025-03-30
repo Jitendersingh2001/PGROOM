@@ -7,6 +7,29 @@ class PropertyRepository {
   }
 
   /**
+   * Function to create a property
+   */
+  async #createProperty(propertyData) {
+    return this.prisma.UserProperties.create({
+      data: propertyData,
+    });
+  }
+
+  /**
+   * Function to update a property
+   * If the property does not exist, it will create a new one
+   * If the property exists, it will update the existing one
+   */
+  async #updateProperty(propertyId, propertyData) {
+    return this.prisma.UserProperties.upsert({
+      where: {
+        id: propertyId,
+      },
+      update: propertyData,
+      create: propertyData,
+    });
+  }
+  /**
    * Function to add or update a property
    */
   async addOrUpdateProperty(
@@ -32,24 +55,11 @@ class PropertyRepository {
         status,
       };
 
-      // If `id` is null, create a new property
-      if (id === null) {
-        const newProperty = await this.prisma.UserProperties.create({
-          data: propertyData,
-        });
-        return newProperty;
-      }
-
-      // If `id` is provided, update the existing property
-      const updatedProperty = await this.prisma.UserProperties.upsert({
-        where: {
-          id: id,
-        },
-        update: propertyData,
-        create: propertyData,
-      });
-
-      return updatedProperty;
+       // If `id` is null, create a new property
+       return id === null
+       ? this.#createProperty(propertyData)
+         : this.#updateProperty(id, propertyData);
+      
     } catch (error) {
       throw new Error(error.message);
     }
