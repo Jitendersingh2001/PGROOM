@@ -6,9 +6,11 @@ const {
 } = require("../utils/awsHelper");
 const { v4: uuidv4 } = require("uuid");
 const propertyRepository = require("../repository/propertyRepository");
+const { PrismaClient } = require("@prisma/client");
 
 class PropertyService {
   constructor() {
+    this.prisma = new PrismaClient();
     this.propertyRepository = new propertyRepository();
   }
 
