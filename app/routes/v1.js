@@ -70,15 +70,18 @@ router
  */
 router.get("/getTenants", controller.userController.getTenants);
 
-
 /**
  * TENANT ROUTES
  */
-router.post("/tenant",
-  validateRequest(validators.tenantValidator),
-  controller.tenantController.createTenant)
+router
+  .route("/tenant")
+  .post(
+    validateRequest(validators.tenantValidator),
+    controller.tenantController.createTenant
+  )
   .put(
     validateRequest(validators.tenantValidator),
     controller.tenantController.updateTenant
   );
+
 module.exports = router;
