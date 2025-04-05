@@ -1,4 +1,4 @@
-let config = require('./config/initEnv');
+let config = require('./config/InitEnv');
 const app = require('./app');
 
 const PORT = config.server.port || 3000;

@@ -1,4 +1,4 @@
-const awsS3Config = require("../config/awsS3Config");
+const awsS3Config = require("../config/AwsS3Config");
 const s3Config = awsS3Config.defaultInstance;
 const { 
   PutObjectCommand, 

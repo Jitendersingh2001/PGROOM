@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const config = require("../config/initEnv");
+const config = require("../config/InitEnv");
 const helper = require("./Helper");
 const message = require("../constant/Message");
 const http = require("../constant/StatusCodes");
