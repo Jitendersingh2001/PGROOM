@@ -1,10 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
-const helper = require("../utils/helper");
+const helper = require("../utils/Helper");
 const http = require("../constant/StatusCodes");
 const constMessage = require("../constant/Message");
 const bcrypt = require("bcrypt");
 const constant = require("../constant/Constant");
-const sendEmail = require('../utils/mailer');
+const sendEmail = require('../utils/Mailer');
 const message = require("../constant/Message");
 
 class ProfileService {

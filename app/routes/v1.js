@@ -16,13 +16,13 @@ router
   .post(
     uploadImages,
     validateFileUpload,
-    validateRequest(validators.propertyValidator),
+    validateRequest(validators.PropertyValidator),
     controller.PropertyController.addProperty
   )
   .put(
     uploadImages,
     validateFileUpload,
-    validateRequest(validators.propertyValidator),
+    validateRequest(validators.PropertyValidator),
     controller.PropertyController.updateProperty
   );
 
@@ -35,7 +35,7 @@ router.post("/properties", controller.PropertyController.getAllProperties);
 
 router.put(
   "/propertyStatus",
-  validateRequest(validators.propertyStatusValidator),
+  validateRequest(validators.PropertyStatusValidator),
   controller.PropertyController.updatePropertyStatus
 );
 
@@ -48,13 +48,13 @@ router
   .post(
     uploadImages,
     validateFileUpload,
-    validateRequest(validators.roomValidator),
+    validateRequest(validators.RoomValidator),
     controller.RoomController.addRoom
   )
   .put(
     uploadImages,
     validateFileUpload,
-    validateRequest(validators.roomValidator),
+    validateRequest(validators.RoomValidator),
     controller.RoomController.updateRoom
   );
 
@@ -76,11 +76,11 @@ router.get("/getTenants", controller.UserController.getTenants);
 router
   .route("/tenant")
   .post(
-    validateRequest(validators.tenantValidator),
+    validateRequest(validators.TenantValidator),
     controller.TenantController.createTenant
   )
   .put(
-    validateRequest(validators.tenantValidator),
+    validateRequest(validators.TenantValidator),
     controller.TenantController.updateTenant
   );
 

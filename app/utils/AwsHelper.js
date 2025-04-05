@@ -8,7 +8,7 @@ const {
   DeleteObjectsCommand 
 } = require("@aws-sdk/client-s3");
 
-class awsHelper {
+class AwsHelper {
   constructor() {
     // Initialize the S3 client
     this.s3 = s3Config.getS3Client();
@@ -112,4 +112,4 @@ class awsHelper {
   };
 }
 
-module.exports = new awsHelper();
+module.exports = new AwsHelper();

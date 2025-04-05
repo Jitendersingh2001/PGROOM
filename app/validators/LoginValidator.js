@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const loginValidator = Joi.object({
+const LoginValidator = Joi.object({
   email: Joi.string()
     .email()
     .required()
@@ -17,4 +17,4 @@ const loginValidator = Joi.object({
     }),
 });
 
-module.exports = loginValidator;
+module.exports = LoginValidator;

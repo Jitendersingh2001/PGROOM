@@ -1,6 +1,6 @@
 const http = require('../constant/StatusCodes');
 const constMessage = require('../constant/Message');
-const logger = require('../utils/logger');
+const logger = require('../utils/Logger');
 
 class Controller {
     sendResponse = (res, data, message, statusCode) => {

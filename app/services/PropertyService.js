@@ -3,7 +3,7 @@ const {
   uploadFileToS3,
   getFileFromS3,
   deleteFileFromS3,
-} = require("../utils/awsHelper");
+} = require("../utils/AwsHelper");
 const { v4: uuidv4 } = require("uuid");
 const propertyRepository = require("../repository/PropertyRepository");
 const { PrismaClient } = require("@prisma/client");

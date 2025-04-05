@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const regex = require("../constant/Regex");
 
-const roomValidator = Joi.object({
+const RoomValidator = Joi.object({
     propertyId: Joi.string().required().empty(["", null]).messages({
         "any.required": "Property Id is required",
         "string.base": "Property Id must be a string",
@@ -33,4 +33,4 @@ const roomValidator = Joi.object({
 
 });
 
-module.exports = roomValidator;
+module.exports = RoomValidator;

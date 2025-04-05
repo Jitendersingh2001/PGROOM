@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const constant = require("../constant/Constant");
-const { paginate } = require("../utils/helper");
+const { paginate } = require("../utils/Helper");
 
 class userRepository {
   constructor(prismaClient) {

@@ -3,7 +3,7 @@ const Joi = require('joi');
 const regex = require('../constant/Regex');
 const { EmailExists, MobileExists } = require('../rules');
 
-const registerValidator = Joi.object({
+const RegisterValidator = Joi.object({
   firstName: Joi.string()
     .required()
     .not().empty()
@@ -96,4 +96,4 @@ const registerValidator = Joi.object({
     }),
 });
 
-module.exports = registerValidator;
+module.exports = RegisterValidator;

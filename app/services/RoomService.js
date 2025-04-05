@@ -3,7 +3,7 @@ const {
   uploadFileToS3,
   getFileFromS3,
   deleteFolderFromS3,
-} = require("../utils/awsHelper");
+} = require("../utils/AwsHelper");
 const { v4: uuidv4 } = require("uuid");
 const roomRepository = require("../repository/RoomRepository");
 

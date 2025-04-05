@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/initEnv");
 const http = require("../constant/StatusCodes");
 
-class helper {
+class Helper {
   sendError = (res, message, statusCode) => {
     const response = {
       message: message,
@@ -47,4 +47,4 @@ class helper {
     }));
   };
 }
-module.exports = new helper();
+module.exports = new Helper();

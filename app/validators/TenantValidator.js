@@ -2,7 +2,7 @@ const Joi = require("joi");
 const regex = require("../constant/Regex");
 const { TenantExists } = require('../rules');
 
-const tenantValidator = Joi.object({
+const TenantValidator = Joi.object({
   userIds: Joi.array().required().empty(["", null]) .external(TenantExists.validate).messages({
     "any.required": "User Ids are required",
     "array.base": "User Ids must be an array",
@@ -17,4 +17,4 @@ const tenantValidator = Joi.object({
   }),
 });
 
-module.exports = tenantValidator;
+module.exports = TenantValidator;
