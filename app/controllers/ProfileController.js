@@ -1,11 +1,11 @@
 const profileService = require("../services/profileService");
-const Controller = require("./controller");
+const Controller = require("./Controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const { loginValidator, registerValidator } = require("../validators/index");
 const validateRequest = require("../middleware/validationMiddleware");
 
-class profileController extends Controller {
+class ProfileController extends Controller {
   constructor() {
     super();
     this.profileService = new profileService();
@@ -52,4 +52,4 @@ class profileController extends Controller {
   ];
 }
 
-module.exports = new profileController();
+module.exports = new ProfileController();

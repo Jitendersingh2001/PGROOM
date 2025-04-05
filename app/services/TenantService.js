@@ -1,6 +1,5 @@
-const { parse } = require("handlebars");
 const constant = require("../constant/constant");
-const tenantRepository = require("../repository/tenantRepository");
+const tenantRepository = require("../repository/TenantRepository");
 
 class tenantService {
   constructor(repository) {

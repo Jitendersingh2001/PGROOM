@@ -1,10 +1,10 @@
-const roomService = require("../services/roomService");
-const Controller = require("./controller");
+const roomService = require("../services/RoomService");
+const Controller = require("./Controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const constant = require("../constant/constant");
 
-class roomController extends Controller {
+class RoomController extends Controller {
   constructor(roomService) {
     super();
     this.roomService = roomService;
@@ -93,4 +93,4 @@ class roomController extends Controller {
   };
 }
 
-module.exports = new roomController(roomService);
+module.exports = new RoomController(roomService);

@@ -1,10 +1,10 @@
-const userService = require("../services/userService");
-const Controller = require("./controller");
+const userService = require("../services/UserService");
+const Controller = require("./Controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const constant = require("../constant/constant");
 
-class userController extends Controller {
+class UserController extends Controller {
   constructor(userService) {
     super();
     this.userService = userService;
@@ -28,4 +28,4 @@ class userController extends Controller {
   };
 }
 
-module.exports = new userController(userService);
+module.exports = new UserController(userService);

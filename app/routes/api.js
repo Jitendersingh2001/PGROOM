@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const apiController = require('../controllers/apiController');
-const profileController = require('../controllers/profileController');
+const apiController = require('../controllers/ApiController');
+const profileController = require('../controllers/ProfileController');
 
 router.get('/states', apiController.getStates);
 router.get('/cities/:id', apiController.getCities);

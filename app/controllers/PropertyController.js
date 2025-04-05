@@ -1,10 +1,10 @@
-const propertyService = require("../services/propertyService");
-const Controller = require("./controller");
+const propertyService = require("../services/PropertyService");
+const Controller = require("./Controller");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 const constant = require("../constant/constant");
 
-class propertyController extends Controller {
+class PropertyController extends Controller {
   constructor(propertyService) {
     super();
     this.propertyService = propertyService;
@@ -105,4 +105,4 @@ class propertyController extends Controller {
   }
 }
 
-module.exports = new propertyController(new propertyService());
+module.exports = new PropertyController(new propertyService());

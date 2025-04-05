@@ -17,26 +17,26 @@ router
     uploadImages,
     validateFileUpload,
     validateRequest(validators.propertyValidator),
-    controller.propertyController.addProperty
+    controller.PropertyController.addProperty
   )
   .put(
     uploadImages,
     validateFileUpload,
     validateRequest(validators.propertyValidator),
-    controller.propertyController.updateProperty
+    controller.PropertyController.updateProperty
   );
 
 router
   .route("/property/:id")
-  .get(controller.propertyController.getProperty)
-  .delete(controller.propertyController.deleteProperty);
+  .get(controller.PropertyController.getProperty)
+  .delete(controller.PropertyController.deleteProperty);
 
-router.post("/properties", controller.propertyController.getAllProperties);
+router.post("/properties", controller.PropertyController.getAllProperties);
 
 router.put(
   "/propertyStatus",
   validateRequest(validators.propertyStatusValidator),
-  controller.propertyController.updatePropertyStatus
+  controller.PropertyController.updatePropertyStatus
 );
 
 /**
@@ -49,26 +49,26 @@ router
     uploadImages,
     validateFileUpload,
     validateRequest(validators.roomValidator),
-    controller.roomController.addRoom
+    controller.RoomController.addRoom
   )
   .put(
     uploadImages,
     validateFileUpload,
     validateRequest(validators.roomValidator),
-    controller.roomController.updateRoom
+    controller.RoomController.updateRoom
   );
 
-router.post("/rooms", controller.roomController.getAllRooms);
+router.post("/rooms", controller.RoomController.getAllRooms);
 
 router
   .route("/room/:id")
-  .get(controller.roomController.getRoom)
-  .delete(controller.roomController.deleteRoom);
+  .get(controller.RoomController.getRoom)
+  .delete(controller.RoomController.deleteRoom);
 
 /**
  * USER ROUTES
  */
-router.get("/getTenants", controller.userController.getTenants);
+router.get("/getTenants", controller.UserController.getTenants);
 
 /**
  * TENANT ROUTES
@@ -77,11 +77,11 @@ router
   .route("/tenant")
   .post(
     validateRequest(validators.tenantValidator),
-    controller.tenantController.createTenant
+    controller.TenantController.createTenant
   )
   .put(
     validateRequest(validators.tenantValidator),
-    controller.tenantController.updateTenant
+    controller.TenantController.updateTenant
   );
 
 module.exports = router;

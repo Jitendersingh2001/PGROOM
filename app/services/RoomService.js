@@ -5,7 +5,7 @@ const {
   deleteFolderFromS3,
 } = require("../utils/awsHelper");
 const { v4: uuidv4 } = require("uuid");
-const roomRepository = require("../repository/roomRepository");
+const roomRepository = require("../repository/RoomRepository");
 
 class RoomService {
   constructor(repository) {

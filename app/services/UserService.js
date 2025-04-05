@@ -1,6 +1,6 @@
 const constant = require("../constant/constant");
-const userRepository = require("../repository/userRepository");
-const tenantRepository = require("../repository/tenantRepository");
+const userRepository = require("../repository/UserRepository");
+const tenantRepository = require("../repository/TenantRepository");
 
 class userService {
   constructor(repository, tenantRepository) {
