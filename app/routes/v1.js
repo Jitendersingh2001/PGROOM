@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/index");
 const validators = require("../validators/index");
-const validateRequest = require("../middleware/validationMiddleware");
+const validateRequest = require("../middleware/ValidationMiddleware");
 const {
   uploadImages,
   validateFileUpload,
-} = require("../middleware/multerMiddleware");
+} = require("../middleware/MulterMiddleware");
 
 /**
  * Property Routes

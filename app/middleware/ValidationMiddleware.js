@@ -1,11 +1,10 @@
-// validateRequest.js
 const Joi = require('joi');
 const helper = require("../utils/helper");
 const http = require('../constant/StatusCodes');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const validateRequest = (schema) => async (req, res, next) => {
+const ValidateRequest = (schema) => async (req, res, next) => {
   try {
     // If schema has custom validation functions, pass the context
     const validationOptions = {
@@ -23,4 +22,4 @@ const validateRequest = (schema) => async (req, res, next) => {
   }
 };
 
-module.exports = validateRequest;
+module.exports = ValidateRequest;

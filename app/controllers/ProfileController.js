@@ -3,7 +3,7 @@ const Controller = require("./Controller");
 const http = require("../constant/StatusCodes");
 const constMessage = require("../constant/Message");
 const { loginValidator, registerValidator } = require("../validators/index");
-const validateRequest = require("../middleware/validationMiddleware");
+const validateRequest = require("../middleware/ValidationMiddleware");
 
 class ProfileController extends Controller {
   constructor() {
