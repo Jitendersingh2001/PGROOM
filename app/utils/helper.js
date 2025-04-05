@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/initEnv");
-const http = require("../constant/statusCodes");
+const http = require("../constant/StatusCodes");
 
 class helper {
   sendError = (res, message, statusCode) => {

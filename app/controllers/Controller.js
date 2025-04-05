@@ -1,5 +1,5 @@
-const http = require('../constant/statusCodes');
-const constMessage = require('../constant/message');
+const http = require('../constant/StatusCodes');
+const constMessage = require('../constant/Message');
 const logger = require('../utils/logger');
 
 class Controller {

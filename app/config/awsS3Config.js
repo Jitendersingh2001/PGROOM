@@ -1,7 +1,7 @@
 const { S3Client } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const config = require("./initEnv");
-const constant = require("../constant/constant");
+const constant = require("../constant/Constant");
 
 class AwsS3Config {
   #bucketName;

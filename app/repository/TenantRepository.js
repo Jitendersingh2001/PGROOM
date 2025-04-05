@@ -1,5 +1,5 @@
 const BaseRepository = require("./BasePrismaRepository");
-const constant = require("../constant/constant");
+const constant = require("../constant/Constant");
 const { paginate } = require("../utils/helper");
 
 class TenantRepository {

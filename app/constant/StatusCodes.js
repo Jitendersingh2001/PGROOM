@@ -1,4 +1,4 @@
-const http = {
+const Http = {
     OK: 200,
     CREATED: 201,
     ACCEPTED: 202,
@@ -21,4 +21,4 @@ const http = {
     UNPROCESSABLE_ENTITY: 422,
 };
 
-module.exports = http;
+module.exports = Http;

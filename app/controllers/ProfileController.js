@@ -1,7 +1,7 @@
 const profileService = require("../services/profileService");
 const Controller = require("./Controller");
-const http = require("../constant/statusCodes");
-const constMessage = require("../constant/message");
+const http = require("../constant/StatusCodes");
+const constMessage = require("../constant/Message");
 const { loginValidator, registerValidator } = require("../validators/index");
 const validateRequest = require("../middleware/validationMiddleware");
 

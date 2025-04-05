@@ -1,5 +1,5 @@
 const BaseRepository = require("./BasePrismaRepository");
-const constant = require("../constant/constant");
+const constant = require("../constant/Constant");
 
 class PropertyRepository {
   constructor() {

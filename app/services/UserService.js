@@ -1,4 +1,4 @@
-const constant = require("../constant/constant");
+const constant = require("../constant/Constant");
 const userRepository = require("../repository/UserRepository");
 const tenantRepository = require("../repository/TenantRepository");
 

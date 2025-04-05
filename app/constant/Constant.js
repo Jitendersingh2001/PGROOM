@@ -1,4 +1,4 @@
-const constant = {
+const Constant = {
     ACTIVE: "Active",
     INACTIVE: "Inactive",
     DELETED : "Deleted",
@@ -15,4 +15,4 @@ const constant = {
     ROOM_FOLDER : "RoomImages"
 };
 
-module.exports = constant;
+module.exports = Constant;

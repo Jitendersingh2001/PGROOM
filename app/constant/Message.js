@@ -1,6 +1,4 @@
-const { DELETED } = require("./constant");
-
-const message = {
+const Message = {
     SOMETHING_WENT_WRONG: 'Something went wrong',
     REQUEST_SUCCESSFUL: 'Request was successful',
     FETCH_SUCCESSFUL: ':name fetched successfully',
@@ -15,4 +13,4 @@ const message = {
     UPDATED_SUCCESSFULLY : ":name updated successfully",
 };
 
-module.exports = message;
+module.exports = Message;

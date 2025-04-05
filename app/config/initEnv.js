@@ -1,6 +1,6 @@
 // initEnv.js
 const dotenv = require("dotenv");
-const constant = require("../constant/constant");
+const constant = require("../constant/Constant");
 
 // Load .env only if not in Railway (production environment)
 if (process.env.APP_ENV !== constant.PRODUCTION) {

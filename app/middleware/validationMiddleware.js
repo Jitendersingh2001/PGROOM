@@ -1,7 +1,7 @@
 // validateRequest.js
 const Joi = require('joi');
 const helper = require("../utils/helper");
-const http = require('../constant/statusCodes');
+const http = require('../constant/StatusCodes');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 

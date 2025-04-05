@@ -1,8 +1,8 @@
 const propertyService = require("../services/PropertyService");
 const Controller = require("./Controller");
 const http = require("../constant/statusCodes");
-const constMessage = require("../constant/message");
-const constant = require("../constant/constant");
+const constMessage = require("../constant/Message");
+const constant = require("../constant/Constant");
 
 class PropertyController extends Controller {
   constructor(propertyService) {

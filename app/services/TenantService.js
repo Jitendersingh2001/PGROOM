@@ -1,4 +1,4 @@
-const constant = require("../constant/constant");
+const constant = require("../constant/Constant");
 const tenantRepository = require("../repository/TenantRepository");
 
 class tenantService {

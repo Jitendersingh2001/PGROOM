@@ -1,7 +1,7 @@
 const ApiService = require("../services/apiService");
 const Controller = require("./Controller");
-const http = require('../constant/statusCodes');
-const constMessage = require('../constant/message');
+const http = require('../constant/StatusCodes');
+const constMessage = require('../constant/Message');
 
 class ApiController extends Controller {
   constructor() {
