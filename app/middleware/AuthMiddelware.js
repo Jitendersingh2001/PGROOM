@@ -4,7 +4,7 @@ const helper = require("../utils/helper");
 const http = require("../constant/statusCodes");
 const constMessage = require("../constant/message");
 
-const authMiddleware = (req, res, next) => {
+const AuthMiddleware = (req, res, next) => {
     // Extract the token from the 'Authorization' header
     const authHeader = req.header('Authorization');
 
@@ -30,4 +30,4 @@ const authMiddleware = (req, res, next) => {
     }
 };
 
-module.exports = authMiddleware;
+module.exports = AuthMiddleware;
