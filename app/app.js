@@ -3,7 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const crypto = require('crypto');
 const app = express();
-const apiRoutes = require('./routes/api.js');
+const apiRoutes = require('./routes/Api.js');
 const v1 = require('./routes/v1.js');
 const authMiddleware = require('../app/middleware/authMiddelware.js');
 

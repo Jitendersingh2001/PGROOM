@@ -7,7 +7,7 @@ const constant = require("../constant/Constant");
 const sendEmail = require('../utils/mailer');
 const message = require("../constant/Message");
 
-class profileService {
+class ProfileService {
   constructor() {
     this.prisma = new PrismaClient();
   }
@@ -122,4 +122,4 @@ class profileService {
   }
 }
 
-module.exports = profileService;
+module.exports = ProfileService;

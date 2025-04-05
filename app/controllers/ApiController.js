@@ -1,4 +1,4 @@
-const ApiService = require("../services/apiService");
+const ApiService = require("../services/ApiService");
 const Controller = require("./Controller");
 const http = require('../constant/StatusCodes');
 const constMessage = require('../constant/Message');

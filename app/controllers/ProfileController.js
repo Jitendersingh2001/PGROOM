@@ -1,4 +1,4 @@
-const profileService = require("../services/profileService");
+const profileService = require("../services/ProfileService");
 const Controller = require("./Controller");
 const http = require("../constant/StatusCodes");
 const constMessage = require("../constant/Message");
