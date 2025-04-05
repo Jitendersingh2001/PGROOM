@@ -1,11 +1,10 @@
-const { PrismaClient } = require("@prisma/client");
+const BaseRepository = require("./BasePrismaRepository");
 const constant = require("../constant/Constant");
 const { paginate } = require("../utils/Helper");
 
 class userRepository {
-  constructor(prismaClient) {
-    // Dependency injection for PrismaClient
-    this.prisma = prismaClient || new PrismaClient();
+  constructor() {
+    this.baseRepository = new BaseRepository("userRoleLink");
   }
 
   #buildSearchConditions(searchInput, searchFields) {
@@ -68,12 +67,7 @@ class userRepository {
           },
         },
       };
-      return await paginate(
-        this.prisma.userRoleLink,
-        queryOptions,
-        page,
-        limit
-      );
+      return this.baseRepository.paginate(queryOptions, page, limit);
     } catch (error) {
       throw error;
     }
