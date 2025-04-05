@@ -1,34 +1,11 @@
-const { PrismaClient } = require("@prisma/client");
+const BaseRepository = require("./BasePrismaRepository");
 const constant = require("../constant/constant");
-const { paginate } = require("../utils/helper");
+
 class PropertyRepository {
   constructor() {
-    this.prisma = new PrismaClient();
+    this.baseRepository = new BaseRepository("userProperties");
   }
 
-  /**
-   * Function to create a property
-   */
-  async #createProperty(propertyData) {
-    return this.prisma.userProperties.create({
-      data: propertyData,
-    });
-  }
-
-  /**
-   * Function to update a property
-   * If the property does not exist, it will create a new one
-   * If the property exists, it will update the existing one
-   */
-  async #updateProperty(propertyId, propertyData) {
-    return this.prisma.userProperties.upsert({
-      where: {
-        id: propertyId,
-      },
-      update: propertyData,
-      create: propertyData,
-    });
-  }
   /**
    * Function to add or update a property
    */
@@ -55,15 +32,18 @@ class PropertyRepository {
         status,
       };
 
-      // If `id` is null, create a new property
+      // Delegate to BaseRepository's create or upsert methods
       return id === null
-        ? this.#createProperty(propertyData)
-        : this.#updateProperty(id, propertyData);
+        ? this.baseRepository.create(propertyData)
+        : this.baseRepository.upsert({ id }, propertyData, propertyData);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(`Error adding or updating property: ${error.message}`);
     }
   }
 
+  /**
+   * Function to get all properties with pagination
+   */
   async getAllProperties(userId, page, limit) {
     try {
       const queryOptions = {
@@ -84,31 +64,22 @@ class PropertyRepository {
         },
       };
 
-      const result = await paginate(
-        this.prisma.userProperties,
-        queryOptions,
-        page,
-        limit
-      );
-      return result;
+      // Use BaseRepository's paginate method
+      return this.baseRepository.paginate(queryOptions, page, limit);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(`Error fetching properties: ${error.message}`);
     }
   }
 
+  /**
+   * Function to update the status of a property
+   */
   async updatePropertyStatus(id, status) {
     try {
-      const updatedProperty = await this.prisma.userProperties.update({
-        where: {
-          id: id,
-        },
-        data: {
-          status: status,
-        },
-      });
-      return updatedProperty;
+      // Delegate to BaseRepository's update method
+      return this.baseRepository.update(id, { status });
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(`Error updating property status: ${error.message}`);
     }
   }
 }
