@@ -1,35 +1,9 @@
-const { PrismaClient } = require("@prisma/client");
+const BaseRepository = require("./BasePrismaRepository");
 const constant = require("../constant/constant");
-const { paginate } = require("../utils/helper");
 
 class roomRepository {
-  constructor(prismaClient) {
-    // Dependency injection for PrismaClient
-    this.prisma = prismaClient || new PrismaClient();
-  }
-
-  /**
-   * Function to create a room
-   */
-  async #createRoom(roomData) {
-    return this.prisma.rooms.create({
-      data: roomData,
-    });
-  }
-
-  /**
-   * Function to update a room
-   * If the room does not exist, it will create a new one
-   * If the room exists, it will update the existing one
-   */
-  async #updateRoom(roomId, roomData) {
-    return this.prisma.rooms.upsert({
-      where: {
-        id: roomId,
-      },
-      update: roomData,
-      create: roomData,
-    });
+  constructor() {
+    this.baseRepository = new BaseRepository("rooms");
   }
 
   /**
@@ -58,8 +32,8 @@ class roomRepository {
 
       // If `id` is null, create a new property
       return id === null
-        ? this.#createRoom(roomData)
-        : this.#updateRoom(id, roomData);
+        ? this.baseRepository.create(roomData)
+        : this.baseRepository.upsert({ id }, roomData, roomData);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -79,13 +53,7 @@ class roomRepository {
           id: "asc",
         },
       };
-      const result = await paginate(
-        this.prisma.rooms,
-        queryOptions,
-        page,
-        limit
-      );
-      return result;
+      return this.baseRepository.paginate(queryOptions, page, limit);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -96,12 +64,7 @@ class roomRepository {
    */
   async getRoom(roomId) {
     try {
-      const room = await this.prisma.rooms.findUnique({
-        where: {
-          id: roomId,
-        },
-      });
-      return room;
+      return this.baseRepository.findById(roomId);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -112,15 +75,7 @@ class roomRepository {
    */
   async updateRoomStatus(roomId, status) {
     try {
-      const updatedRoom = await this.prisma.rooms.update({
-        where: {
-          id: roomId,
-        },
-        data: {
-          status: status,
-        },
-      });
-      return updatedRoom;
+      return this.baseRepository.update(roomId, { status : status });
     } catch (error) {
       throw new Error(error.message);
     }
