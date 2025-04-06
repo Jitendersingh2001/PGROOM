@@ -44,12 +44,13 @@ class TenantRepository {
     }
   }
 
-  async getTenants(propertyId, roomId) {
+  async getTenants(propertyId, roomId, status = constant.ACTIVE) {
     try {
       return await this.dbClient.tenant.findMany({
         where: {
-          propertyId,
-          roomId,
+          propertyId :propertyId,
+          roomId : roomId,
+          status: status,
         },
         select: {
           id: true,
@@ -62,6 +63,17 @@ class TenantRepository {
           }
         }
       });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Function to delete tenant
+   */
+  async updateTenant(id, status = constant.ACTIVE) {
+    try {
+      return await this.baseRepository.update(id, { status });
     } catch (error) {
       throw error;
     }
