@@ -32,10 +32,12 @@ class tenantService {
   }
 
   /*
-   * Function to update tenant
+   * Function to update tenant assignments for a given property and room.
+   * It deletes removed tenants, restores deleted ones, and creates new tenants as needed.
    */
   async updateTenant(data) {
     try {
+      // Parse and validate input data
       const {
         propertyId,
         roomId,
@@ -46,49 +48,70 @@ class tenantService {
         integerArrayFields: ["userIds", "ids"],
       });
 
+      // Fetch current tenants from the database
       const existingTenants = await this.repository.getTenants(
         propertyId,
         roomId
       );
       const existingIds = existingTenants.map(({ id }) => id);
 
-      const idsToDelete = existingIds.filter((id) => !ids.includes(id));
-      const hasNewUserIds = userIds.length > 0;
+      // Handle deletions: remove tenants that are no longer in the updated list
+      await this.#handleDeletions(existingIds, ids);
 
-      if (idsToDelete.length > 0) {
-        await this.deleteTenant({ ids: idsToDelete });
-      }
-
-      if (hasNewUserIds) {
-        const deletedTenants = await this.repository.getTenants(
-          propertyId,
-          roomId,
-          constant.DELETED
-        );
-        const tenantsToRestore = deletedTenants.filter((tenant) =>
-          userIds.includes(tenant.userId)
-        );
-        const idsToRestore = tenantsToRestore.map((t) => t.id);
-        const restoredUserIds = tenantsToRestore.map((t) => t.userId);
-        const newUserIds = userIds.filter(
-          (id) => !restoredUserIds.includes(id)
-        );
-        if (idsToRestore.length > 0) {
-          await Promise.all(
-            idsToRestore.map((id) => this.repository.updateTenant(id))
-          );
-        }
-        
-
-        if (newUserIds.length > 0) {
-          await this.createTenant({ propertyId, roomId, userIds: newUserIds });
-        }
-      }
+      // Handle creations and restorations of tenants
+      await this.#handleCreationsAndRestorations(propertyId, roomId, userIds);
 
       return true;
     } catch (error) {
-      // Optionally log or rewrap error with context
+      // Wrap error with more context
       throw new Error(`updateTenant failed: ${error.message}`);
+    }
+  }
+
+  /*
+   * Delete tenants that exist in DB but are not in the updated tenant ID list.
+   */
+  async #handleDeletions(existingIds, updatedTenantIds) {
+    const idsToDelete = existingIds.filter(
+      (id) => !updatedTenantIds.includes(id)
+    );
+    if (idsToDelete.length > 0) {
+      await this.deleteTenant({ ids: idsToDelete });
+    }
+  }
+
+  /*
+   * Restore previously deleted tenants if included in the new list,
+   * and create new tenants that were not previously present.
+   */
+  async #handleCreationsAndRestorations(propertyId, roomId, userIds) {
+    if (userIds.length === 0) return;
+
+    // Get previously deleted tenants for the property and room
+    const deletedTenants = await this.repository.getTenants(
+      propertyId,
+      roomId,
+      constant.DELETED
+    );
+
+    // Find tenants to restore from deleted list
+    const tenantsToRestore = deletedTenants.filter((tenant) =>
+      userIds.includes(tenant.userId)
+    );
+    const restoredUserIds = tenantsToRestore.map((t) => t.userId);
+    const idsToRestore = tenantsToRestore.map((t) => t.id);
+
+    // Restore deleted tenants
+    if (idsToRestore.length > 0) {
+      await Promise.all(
+        idsToRestore.map((id) => this.repository.updateTenant(id))
+      );
+    }
+
+    // Create tenants that are not in the restored list
+    const newUserIds = userIds.filter((id) => !restoredUserIds.includes(id));
+    if (newUserIds.length > 0) {
+      await this.createTenant({ propertyId, roomId, userIds: newUserIds });
     }
   }
 
