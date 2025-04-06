@@ -56,12 +56,7 @@ class tenantService {
       const roomId = parseInt(data.roomId, 10);
 
       // Fetch tenants from the repository using propertyId and roomId
-      const tenants = await this.repository.getTenants(propertyId, roomId);
-
-      // Format each tenant as { userId: "FirstName LastName" }
-      return tenants.map(({ userId, user }) => ({
-        [userId]: `${user.firstName} ${user.lastName}`,
-      }));
+      return await this.repository.getTenants(propertyId, roomId);
     } catch (error) {
       throw error;
     }

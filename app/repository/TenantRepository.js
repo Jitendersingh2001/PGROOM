@@ -51,8 +51,7 @@ class TenantRepository {
           propertyId,
           roomId,
         },
-        select: {
-          userId: true,
+        include: {
           user: {
             select: {
               firstName: true,
@@ -64,7 +63,7 @@ class TenantRepository {
     } catch (error) {
       throw error;
     }
-  }
+  }  
 }
 
 module.exports = new TenantRepository();
