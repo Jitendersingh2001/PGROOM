@@ -1,6 +1,6 @@
 const roomService = require("../services/RoomService");
 const Controller = require("./Controller");
-const http = require("../constant/statusCodes");
+const http = require("../constant/StatusCodes");
 const constMessage = require("../constant/Message");
 const constant = require("../constant/Constant");
 

@@ -46,5 +46,11 @@ class Helper {
       },
     }));
   };
+
+  getMissingFields = (source, requiredFields = []) => {
+    if (!source || typeof source !== "object") return requiredFields.join(", ");
+    const missing = requiredFields.filter((field) => !source[field]);
+    return missing.length ? missing.join(", ") : null;
+  };
 }
 module.exports = new Helper();

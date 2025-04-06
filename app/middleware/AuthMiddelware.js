@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/InitEnv');
-const helper = require("../utils/helper");
-const http = require("../constant/statusCodes");
-const constMessage = require("../constant/message");
+const helper = require("../utils/Helper");
+const http = require("../constant/StatusCodes");
+const constMessage = require("../constant/Message");
 
 const AuthMiddleware = (req, res, next) => {
     // Extract the token from the 'Authorization' header

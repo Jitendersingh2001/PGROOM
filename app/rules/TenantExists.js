@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const constMessage = require("../constant/message");
-const constant = require("../constant/constant");
+const constMessage = require("../constant/Message");
+const constant = require("../constant/Constant");
 
 const TenantExists = {
     validate: async (values, helpers) => {

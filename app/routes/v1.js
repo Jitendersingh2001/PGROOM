@@ -82,6 +82,9 @@ router
   .put(
     validateRequest(validators.TenantValidator),
     controller.TenantController.updateTenant
+)
+  .get(
+    controller.TenantController.getTenants
   );
 
 module.exports = router;

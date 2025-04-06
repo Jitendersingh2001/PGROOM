@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const app = express();
 const apiRoutes = require('./routes/Api.js');
 const v1 = require('./routes/v1.js');
-const authMiddleware = require('../app/middleware/authMiddelware.js');
+const authMiddleware = require('../app/middleware/AuthMiddelware.js');
 
 // Generate a secure random session secret using crypto
 const secret = crypto.randomBytes(32).toString('base64');

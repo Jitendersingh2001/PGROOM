@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const helper = require("../utils/helper");
+const helper = require("../utils/Helper");
 const http = require('../constant/StatusCodes');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
