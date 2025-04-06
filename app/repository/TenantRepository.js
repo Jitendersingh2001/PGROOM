@@ -43,6 +43,28 @@ class TenantRepository {
       throw error;
     }
   }
+
+  async getTenants(propertyId, roomId) {
+    try {
+      return await this.dbClient.tenant.findMany({
+        where: {
+          propertyId,
+          roomId,
+        },
+        select: {
+          userId: true,
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+            }
+          }
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new TenantRepository();
