@@ -2,7 +2,7 @@ const profileService = require("../services/ProfileService");
 const Controller = require("./Controller");
 const http = require("../constant/StatusCodes");
 const constMessage = require("../constant/Message");
-const { loginValidator, registerValidator } = require("../validators/index");
+const { LoginValidator, RegisterValidator } = require("../validators/index");
 const validateRequest = require("../middleware/ValidationMiddleware");
 
 class ProfileController extends Controller {
@@ -15,7 +15,7 @@ class ProfileController extends Controller {
    * Function to login
    */
   login = [
-    validateRequest(loginValidator),
+    validateRequest(LoginValidator),
     async (req, res) => {
       try {
         const result = await this.profileService.login(req, res);
@@ -35,7 +35,7 @@ class ProfileController extends Controller {
    * Function to register
    */
   createAccount = [
-    validateRequest(registerValidator),
+    validateRequest(RegisterValidator),
     async (req, res) => {
       try {
         const result = await this.profileService.createAccount(req, res);
